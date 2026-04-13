@@ -40,4 +40,4 @@ class CyclingScreen(Screen):
         if "swim" in self.selected:
             self.manager.current = self.selected["swim"]
     def go_back(self, instance):
-        self.manager.current = "home"
+        self.manager.current = "sport"
