@@ -9,7 +9,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 
 from IntroScreen import IntroScreen
 from SportSelection import SportSelectionScreen
-from RunningScreen import RunningScreen
+from RunningScreen import RunningScreen, RunningTimeMarathon, RunningTimeHalf, RunningTime10k, RunningTime5k
 from CyclingScreen import CyclingScreen
 from SwimmingScreen import SwimmingScreen
 
@@ -23,6 +23,11 @@ class MainApp(App):
         sm.add_widget(RunningScreen(name="running"))
         sm.add_widget(CyclingScreen(name="cycle"))
         sm.add_widget(SwimmingScreen(name="swim"))
+        sm.add_widget(RunningTimeMarathon(name="RunningTimeMarathon"))
+        sm.add_widget(RunningTimeHalf(name="RunningTimeHalf"))
+        sm.add_widget(RunningTime10k(name="RunningTime10k"))
+        sm.add_widget(RunningTime5k(name="RunningTime5k"))
+
 
         return sm
 
