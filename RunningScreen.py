@@ -62,9 +62,9 @@ class RunningTimeMarathon(Screen):
 
         layout = BoxLayout(orientation='vertical', padding=40)
         label = Label(text="What is your fastest Marathon time (HH:MM:SS)", font_size=24)
-        self.input = TextInput(font_size=24, size_hint=(1, 0.2), multiline=False)
+        MarathonTime = TextInput(font_size=24, size_hint=(1, 0.2), multiline=False)
         layout.add_widget(label)
-        layout.add_widget(self.input)
+        layout.add_widget(MarathonTime)
 
 
         back_btn = Button(
@@ -98,9 +98,9 @@ class RunningTimeHalf(Screen):
 
         layout = BoxLayout(orientation='vertical', padding=40)
         label = Label(text="What is your fastest Half Marathon time (HH:MM:SS)", font_size=24)
-        self.input = TextInput(font_size=24, size_hint=(1, 0.2), multiline=False)
+        HalfMarathonTime = TextInput(font_size=24, size_hint=(1, 0.2), multiline=False)
         layout.add_widget(label)
-        layout.add_widget(self.input)
+        layout.add_widget(HalfMarathonTime)
 
 
         back_btn = Button(
@@ -134,9 +134,9 @@ class RunningTime10k(Screen):
 
         layout = BoxLayout(orientation='vertical', padding=40)
         label = Label(text="What is your fastest 10KM time (HH:MM:SS)", font_size=24)
-        self.input = TextInput(font_size=24, size_hint=(1, 0.2), multiline=False)
+        KM10Time = TextInput(font_size=24, size_hint=(1, 0.2), multiline=False)
         layout.add_widget(label)
-        layout.add_widget(self.input)
+        layout.add_widget(KM10Time)
 
 
         back_btn = Button(
@@ -170,9 +170,9 @@ class RunningTime5k(Screen):
 
         layout = BoxLayout(orientation='vertical', padding=40)
         label = Label(text="What is your fastest 5KM time (HH:MM:SS)", font_size=24)
-        self.input = TextInput(font_size=24, size_hint=(1, 0.2), multiline=False)
+        KM5Time = TextInput(font_size=24, size_hint=(1, 0.2), multiline=False)
         layout.add_widget(label)
-        layout.add_widget(self.input)
+        layout.add_widget(KM5Time)
 
         print(self.input)
 
