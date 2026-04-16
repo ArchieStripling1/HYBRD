@@ -11,10 +11,12 @@ class CyclingScreen(Screen):
         super().__init__(**kwargs) # setup Kivy screen
 
         layout = BoxLayout(orientation='vertical', padding=40)
-
+        self.input = TextInput(font_size=24, size_hint=(1, 0.2), multiline=False)
         label = Label(text="Enter your longest Cycle (km)", font_size=24)
 
         layout.add_widget(label)
+        layout.add_widget(self.input)
+
 
         next_btn = Button(
             text="Next",
@@ -37,7 +39,8 @@ class CyclingScreen(Screen):
         self.add_widget(layout)
 
     def go_next(self, instance):
-        if "swim" in self.selected:
-            self.manager.current = self.selected["swim"]
+        CyclingDistance = float(self.input.text)
+
+
     def go_back(self, instance):
         self.manager.current = "sport"

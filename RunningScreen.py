@@ -174,8 +174,6 @@ class RunningTime5k(Screen):
         layout.add_widget(label)
         layout.add_widget(KM5Time)
 
-        print(self.input)
-
 
         back_btn = Button(
             text="Previous",
