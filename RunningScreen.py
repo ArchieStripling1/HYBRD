@@ -61,8 +61,11 @@ class RunningTimeMarathon(Screen):
         super().__init__(**kwargs) # setup Kivy screen
 
         layout = BoxLayout(orientation='vertical', padding=40)
-        label = Label(text="What is your fastest Marathon time:", font_size=24)
+        label = Label(text="What is your fastest Marathon time (HH:MM:SS)", font_size=24)
+        self.input = TextInput(font_size=24, size_hint=(1, 0.2), multiline=False)
         layout.add_widget(label)
+        layout.add_widget(self.input)
+
 
         back_btn = Button(
             text="Previous",
@@ -94,8 +97,11 @@ class RunningTimeHalf(Screen):
         super().__init__(**kwargs) # setup Kivy screen
 
         layout = BoxLayout(orientation='vertical', padding=40)
-        label = Label(text="What is your fastest Half Marathon time:", font_size=24)
+        label = Label(text="What is your fastest Half Marathon time (HH:MM:SS)", font_size=24)
+        self.input = TextInput(font_size=24, size_hint=(1, 0.2), multiline=False)
         layout.add_widget(label)
+        layout.add_widget(self.input)
+
 
         back_btn = Button(
             text="Previous",
@@ -127,8 +133,11 @@ class RunningTime10k(Screen):
         super().__init__(**kwargs) # setup Kivy screen
 
         layout = BoxLayout(orientation='vertical', padding=40)
-        label = Label(text="What is your fastest 10KM time:", font_size=24)
+        label = Label(text="What is your fastest 10KM time (HH:MM:SS)", font_size=24)
+        self.input = TextInput(font_size=24, size_hint=(1, 0.2), multiline=False)
         layout.add_widget(label)
+        layout.add_widget(self.input)
+
 
         back_btn = Button(
             text="Previous",
@@ -160,8 +169,13 @@ class RunningTime5k(Screen):
         super().__init__(**kwargs) # setup Kivy screen
 
         layout = BoxLayout(orientation='vertical', padding=40)
-        label = Label(text="What is your fastest 5KM time:", font_size=24)
+        label = Label(text="What is your fastest 5KM time (HH:MM:SS)", font_size=24)
+        self.input = TextInput(font_size=24, size_hint=(1, 0.2), multiline=False)
         layout.add_widget(label)
+        layout.add_widget(self.input)
+
+        print(self.input)
+
 
         back_btn = Button(
             text="Previous",
