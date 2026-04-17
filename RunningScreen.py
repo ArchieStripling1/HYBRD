@@ -14,11 +14,15 @@ class RunningScreen(Screen):
         layout = BoxLayout(orientation='vertical', padding=40)
         self.input = TextInput(font_size=24, size_hint=(1, 0.2), multiline=False)
         label = Label(text="Enter your longest run (km)", font_size=24)
+        label1 = Label(text="Enter your weekly Average (KM)", font_size=24)
+        self.input2 = TextInput(font_size=24, size_hint=(1, 0.2), multiline=False)
 
 
 
         layout.add_widget(label)
         layout.add_widget(self.input)
+        layout.add_widget(label1)
+        layout.add_widget(self.input2)
 
 
         back_btn = Button(
@@ -43,11 +47,13 @@ class RunningScreen(Screen):
 
     def go_next(self, instance):
         longestDistance = float(self.input.text)
+        weeklyDistance = float(self.input2.text)
+
         if longestDistance >= 5 and longestDistance < 10:
             self.manager.current = "RunningTime5k"
         elif longestDistance >= 10 and longestDistance < 21:
             self.manager.current = "RunningTime10k"
-        elif (longestDistance >= 21and longestDistance < 42):
+        elif (longestDistance >= 21 and longestDistance < 42):
             self.manager.current = "RunningTimeHalf"
         elif longestDistance >= 42:
             self.manager.current = "RunningTimeMarathon"
@@ -195,7 +201,7 @@ class RunningTime5k(Screen):
         self.add_widget(layout)
 
     def go_next(self, instance):
-        self.manager.current = "RunningScreen"
+        self.manager.current = "sport"
 
     def go_back(self, instance):
         self.manager.current = "running"
