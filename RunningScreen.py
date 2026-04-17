@@ -5,6 +5,7 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.screenmanager import ScreenManager, Screen
+from SportSelection import selected
 
 
 class RunningScreen(Screen):
@@ -201,7 +202,26 @@ class RunningTime5k(Screen):
         self.add_widget(layout)
 
     def go_next(self, instance):
-        self.manager.current = "sport"
+        selected.remove('running')
+        print(selected)
+        length = len(selected)
+        for i in range(length):
+            self.manager.current = selected[i]
+
+        if not selected:
+            self.manager.current = "intro"
+
+
 
     def go_back(self, instance):
         self.manager.current = "running"
+
+class Display(Screen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)  # setup Kivy screen
+
+        layout = BoxLayout(orientation='vertical', padding=40)
+        label = Label(text = "Display", font_size=24)
+        layout.add_widget(label)
+
+        self.add_widget(layout)

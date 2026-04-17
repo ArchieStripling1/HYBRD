@@ -5,13 +5,16 @@ from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.screenmanager import ScreenManager, Screen
 
-
+selected = []
 
 class SportSelectionScreen(Screen):
     def __init__(self, **kwargs):
+
+
+
         super().__init__(**kwargs) # setup Kivy screen
 
-        self.selected=[]
+
 
         layout = BoxLayout(
             orientation='vertical',
@@ -64,30 +67,30 @@ class SportSelectionScreen(Screen):
         self.add_widget(layout)
 
     def select_running(self, instance):
-        if "running" not in self.selected:
-            self.selected.append("running")
-            print("Selected:", self.selected)
+        if "running" not in selected:
+            selected.append("running")
+            print("Selected:", selected)
         else:
-            self.selected.remove("running")
-            print("Selected:", self.selected)
+            selected.remove("running")
+            print("Selected:", selected)
 
     def select_cycle(self, instance):
-        if "cycle" not in self.selected:
-            self.selected.append("cycle")
-            print("Selected:", self.selected)
+        if "cycle" not in selected:
+            selected.append("cycle")
+            print("Selected:", selected)
         else:
-            self.selected.remove("cycle")
-            print("Selected:", self.selected)
+            selected.remove("cycle")
+            print("Selected:", selected)
 
     def select_swim(self, instance):
-        if "swim" not in self.selected:
-            self.selected.append("swim")
-            print("Selected:", self.selected)
+        if "swim" not in selected:
+            selected.append("swim")
+            print("Selected:", selected)
         else:
-            self.selected.remove("swim")
-            print("Selected:", self.selected)
+            selected.remove("swim")
+            print("Selected:", selected)
 
     def go_next(self, instance):
-        if self.selected is not None: #this does not work and even doing it by length doesnt work.
-            self.manager.current = self.selected[0]
+        if selected is not None: #this does not work and even doing it by length doesnt work.
+            self.manager.current = selected[0]
 

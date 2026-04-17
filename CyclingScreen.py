@@ -5,6 +5,8 @@ from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.screenmanager import ScreenManager, Screen
 
+from SportSelection import selected
+
 
 class CyclingScreen(Screen):
     def __init__(self, **kwargs):
@@ -156,7 +158,15 @@ class Cycling10K(Screen):
         self.add_widget(layout)
 
     def go_next(self, instance):
-        self.manager.current = "sport"
+        selected.remove('cycle')
+        print(selected)
+        length = len(selected)
+        for i in range(length):
+            self.manager.current = selected[i]
+
+        if not selected:
+            self.manager.current = "intro"
+
 
     def go_back(self, instance):
         self.manager.current = "swim"
