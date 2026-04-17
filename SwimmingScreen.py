@@ -1,9 +1,8 @@
-from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
-from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.screenmanager import Screen
 from SportSelection import selected
 
 
@@ -42,18 +41,18 @@ class SwimmingScreen(Screen):
 
         self.add_widget(layout)
 
-    def go_next(self, instance):
+    def go_next(self):
         SwimmingDistance = float(self.input.text)
         weeklyDistance = float(self.input2.text)
-        if SwimmingDistance >= 100 and SwimmingDistance <= 500:
+        if 100 <= SwimmingDistance <= 500:
             self.manager.current = "Pace100M"
-        elif SwimmingDistance >= 500 and SwimmingDistance <= 1000:
+        elif 500 <= SwimmingDistance <= 1000:
             self.manager.current = "Pace400M"
-        elif SwimmingDistance >= 1000 and SwimmingDistance <= 2000:
+        elif 1000 <= SwimmingDistance <= 2000:
             self.manager.current = "Pace1000M"
 
 
-    def go_back(self, instance):
+    def go_back(self):
         self.manager.current = "sport"
 
 class Pace1000M(Screen):
@@ -85,10 +84,10 @@ class Pace1000M(Screen):
 
         self.add_widget(layout)
 
-    def go_next(self, instance):
+    def go_next(self):
         self.manager.current = "Pace400M"
 
-    def go_back(self, instance):
+    def go_back(self):
         self.manager.current = "swim"
 
 class Pace400M(Screen):
@@ -120,10 +119,10 @@ class Pace400M(Screen):
 
         self.add_widget(layout)
 
-    def go_next(self, instance):
+    def go_next(self):
         self.manager.current = "Pace100M"
 
-    def go_back(self, instance):
+    def go_back(self):
         self.manager.current = "swim"
 
 class Pace100M(Screen):
@@ -155,7 +154,7 @@ class Pace100M(Screen):
 
         self.add_widget(layout)
 
-    def go_next(self, instance):
+    def go_next(self):
         selected.remove('swim')
         print(selected)
         length = len(selected)
@@ -165,5 +164,5 @@ class Pace100M(Screen):
         if not selected:
             self.manager.current = "intro"
 
-    def go_back(self, instance):
+    def go_back(self):
         self.manager.current = "swim"

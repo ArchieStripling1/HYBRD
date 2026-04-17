@@ -1,9 +1,7 @@
-from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
-from kivy.uix.textinput import TextInput
-from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.screenmanager import Screen
 
 class IntroScreen(Screen):
     def __init__(self, **kwargs):
@@ -34,5 +32,5 @@ class IntroScreen(Screen):
 
         self.add_widget(layout)
 
-    def go_next(self, instance):
+    def go_next(self):
         self.manager.current = "sport"

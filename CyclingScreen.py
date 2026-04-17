@@ -1,9 +1,8 @@
-from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
-from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.screenmanager import Screen
 
 from SportSelection import selected
 
@@ -44,18 +43,18 @@ class CyclingScreen(Screen):
 
         self.add_widget(layout)
 
-    def go_next(self, instance):
+    def go_next(self):
         CyclingDistance = float(self.input.text)
         WeeklyDistance = float(self.input2.text)
-        if CyclingDistance >= 0 and CyclingDistance <50:
+        if 0 <= CyclingDistance < 50:
             self.manager.current = "Cycling10K"
-        elif CyclingDistance >= 50 and CyclingDistance <100:
+        elif 50 <= CyclingDistance < 100:
             self.manager.current = "Cycling50K"
         elif CyclingDistance >= 100:
             self.manager.current = "Cycling100K"
 
 
-    def go_back(self, instance):
+    def go_back(self):
         self.manager.current = "sport"
 
 class Cycling100K(Screen):
@@ -87,10 +86,10 @@ class Cycling100K(Screen):
 
         self.add_widget(layout)
 
-    def go_next(self, instance):
+    def go_next(self):
         self.manager.current = "Cycling50K"
 
-    def go_back(self, instance):
+    def go_back(self):
         self.manager.current = "swim"
 
 class Cycling50K(Screen):
@@ -122,10 +121,10 @@ class Cycling50K(Screen):
 
         self.add_widget(layout)
 
-    def go_next(self, instance):
+    def go_next(self):
         self.manager.current = "Cycling10K"
 
-    def go_back(self, instance):
+    def go_back(self):
         self.manager.current = "swim"
 
 class Cycling10K(Screen):
@@ -157,7 +156,7 @@ class Cycling10K(Screen):
 
         self.add_widget(layout)
 
-    def go_next(self, instance):
+    def go_next(self):
         selected.remove('cycle')
         print(selected)
         length = len(selected)
@@ -168,5 +167,5 @@ class Cycling10K(Screen):
             self.manager.current = "intro"
 
 
-    def go_back(self, instance):
+    def go_back(self):
         self.manager.current = "swim"

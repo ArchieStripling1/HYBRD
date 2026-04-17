@@ -1,10 +1,8 @@
-
-from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
-from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.screenmanager import Screen
 from SportSelection import selected
 
 
@@ -46,20 +44,20 @@ class RunningScreen(Screen):
         self.add_widget(layout)
 
 
-    def go_next(self, instance):
+    def go_next(self):
         longestDistance = float(self.input.text)
         weeklyDistance = float(self.input2.text)
 
-        if longestDistance >= 5 and longestDistance < 10:
+        if 5 <= longestDistance < 10:
             self.manager.current = "RunningTime5k"
-        elif longestDistance >= 10 and longestDistance < 21:
+        elif 10 <= longestDistance < 21:
             self.manager.current = "RunningTime10k"
-        elif (longestDistance >= 21 and longestDistance < 42):
+        elif 21 <= longestDistance < 42:
             self.manager.current = "RunningTimeHalf"
         elif longestDistance >= 42:
             self.manager.current = "RunningTimeMarathon"
 
-    def go_back(self, instance):
+    def go_back(self):
         self.manager.current = "sport"
 
 
@@ -93,10 +91,10 @@ class RunningTimeMarathon(Screen):
 
         self.add_widget(layout)
 
-    def go_next(self, instance):
+    def go_next(self):
         self.manager.current = "RunningTimeHalf"
 
-    def go_back(self, instance):
+    def go_back(self):
         self.manager.current = "running"
 
 class RunningTimeHalf(Screen):
@@ -129,10 +127,10 @@ class RunningTimeHalf(Screen):
 
         self.add_widget(layout)
 
-    def go_next(self, instance):
+    def go_next(self):
         self.manager.current = "RunningTime10k"
 
-    def go_back(self, instance):
+    def go_back(self):
         self.manager.current = "running"
 
 class RunningTime10k(Screen):
@@ -165,10 +163,10 @@ class RunningTime10k(Screen):
 
         self.add_widget(layout)
 
-    def go_next(self, instance):
+    def go_next(self):
         self.manager.current = "RunningTime5k"
 
-    def go_back(self, instance):
+    def go_back(self):
         self.manager.current = "running"
 
 class RunningTime5k(Screen):
@@ -201,7 +199,7 @@ class RunningTime5k(Screen):
 
         self.add_widget(layout)
 
-    def go_next(self, instance):
+    def go_next(self):
         selected.remove('running')
         print(selected)
         length = len(selected)
@@ -213,7 +211,7 @@ class RunningTime5k(Screen):
 
 
 
-    def go_back(self, instance):
+    def go_back(self):
         self.manager.current = "running"
 
 class Display(Screen):

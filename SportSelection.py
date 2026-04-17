@@ -1,9 +1,7 @@
-from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
-from kivy.uix.textinput import TextInput
-from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.screenmanager import Screen
 
 selected = []
 
@@ -66,7 +64,8 @@ class SportSelectionScreen(Screen):
 
         self.add_widget(layout)
 
-    def select_running(self, instance):
+    @staticmethod
+    def select_running():
         if "running" not in selected:
             selected.append("running")
             print("Selected:", selected)
@@ -74,7 +73,8 @@ class SportSelectionScreen(Screen):
             selected.remove("running")
             print("Selected:", selected)
 
-    def select_cycle(self, instance):
+    @staticmethod
+    def select_cycle():
         if "cycle" not in selected:
             selected.append("cycle")
             print("Selected:", selected)
@@ -82,7 +82,8 @@ class SportSelectionScreen(Screen):
             selected.remove("cycle")
             print("Selected:", selected)
 
-    def select_swim(self, instance):
+    @staticmethod
+    def select_swim():
         if "swim" not in selected:
             selected.append("swim")
             print("Selected:", selected)
@@ -90,7 +91,7 @@ class SportSelectionScreen(Screen):
             selected.remove("swim")
             print("Selected:", selected)
 
-    def go_next(self, instance):
-        if selected is not None: #this does not work and even doing it by length doesnt work.
+    def go_next(self):
+        if selected is not None: #this does not work and even doing it by length doesn't work.
             self.manager.current = selected[0]
 
