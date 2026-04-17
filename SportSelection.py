@@ -65,7 +65,7 @@ class SportSelectionScreen(Screen):
         self.add_widget(layout)
 
     @staticmethod
-    def select_running():
+    def select_running(instance):
         if "running" not in selected:
             selected.append("running")
             print("Selected:", selected)
@@ -74,7 +74,7 @@ class SportSelectionScreen(Screen):
             print("Selected:", selected)
 
     @staticmethod
-    def select_cycle():
+    def select_cycle(instance):
         if "cycle" not in selected:
             selected.append("cycle")
             print("Selected:", selected)
@@ -83,7 +83,7 @@ class SportSelectionScreen(Screen):
             print("Selected:", selected)
 
     @staticmethod
-    def select_swim():
+    def select_swim(instance):
         if "swim" not in selected:
             selected.append("swim")
             print("Selected:", selected)
@@ -91,7 +91,7 @@ class SportSelectionScreen(Screen):
             selected.remove("swim")
             print("Selected:", selected)
 
-    def go_next(self):
+    def go_next(self, instance):
         if selected is not None: #this does not work and even doing it by length doesn't work.
             self.manager.current = selected[0]
 

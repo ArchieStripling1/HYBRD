@@ -32,5 +32,5 @@ class IntroScreen(Screen):
 
         self.add_widget(layout)
 
-    def go_next(self):
+    def go_next(self, instance):
         self.manager.current = "sport"

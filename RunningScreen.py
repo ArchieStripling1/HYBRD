@@ -44,7 +44,7 @@ class RunningScreen(Screen):
         self.add_widget(layout)
 
 
-    def go_next(self):
+    def go_next(self, instance):
         longestDistance = float(self.input.text)
         weeklyDistance = float(self.input2.text)
 
@@ -57,7 +57,7 @@ class RunningScreen(Screen):
         elif longestDistance >= 42:
             self.manager.current = "RunningTimeMarathon"
 
-    def go_back(self):
+    def go_back(self, instance):
         self.manager.current = "sport"
 
 
@@ -91,10 +91,10 @@ class RunningTimeMarathon(Screen):
 
         self.add_widget(layout)
 
-    def go_next(self):
+    def go_next(self, instance):
         self.manager.current = "RunningTimeHalf"
 
-    def go_back(self):
+    def go_back(self, instance):
         self.manager.current = "running"
 
 class RunningTimeHalf(Screen):
@@ -127,10 +127,10 @@ class RunningTimeHalf(Screen):
 
         self.add_widget(layout)
 
-    def go_next(self):
+    def go_next(self, instance):
         self.manager.current = "RunningTime10k"
 
-    def go_back(self):
+    def go_back(self, instance):
         self.manager.current = "running"
 
 class RunningTime10k(Screen):
@@ -163,10 +163,10 @@ class RunningTime10k(Screen):
 
         self.add_widget(layout)
 
-    def go_next(self):
+    def go_next(self, instance):
         self.manager.current = "RunningTime5k"
 
-    def go_back(self):
+    def go_back(self, instance):
         self.manager.current = "running"
 
 class RunningTime5k(Screen):
@@ -199,7 +199,7 @@ class RunningTime5k(Screen):
 
         self.add_widget(layout)
 
-    def go_next(self):
+    def go_next(self, instance):
         selected.remove('running')
         print(selected)
         length = len(selected)
@@ -211,7 +211,7 @@ class RunningTime5k(Screen):
 
 
 
-    def go_back(self):
+    def go_back(self, instance):
         self.manager.current = "running"
 
 class Display(Screen):

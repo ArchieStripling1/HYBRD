@@ -41,7 +41,7 @@ class SwimmingScreen(Screen):
 
         self.add_widget(layout)
 
-    def go_next(self):
+    def go_next(self, instance):
         SwimmingDistance = float(self.input.text)
         weeklyDistance = float(self.input2.text)
         if 100 <= SwimmingDistance <= 500:
@@ -52,7 +52,7 @@ class SwimmingScreen(Screen):
             self.manager.current = "Pace1000M"
 
 
-    def go_back(self):
+    def go_back(self, instance):
         self.manager.current = "sport"
 
 class Pace1000M(Screen):
@@ -84,10 +84,10 @@ class Pace1000M(Screen):
 
         self.add_widget(layout)
 
-    def go_next(self):
+    def go_next(self, instance):
         self.manager.current = "Pace400M"
 
-    def go_back(self):
+    def go_back(self, instance):
         self.manager.current = "swim"
 
 class Pace400M(Screen):
@@ -119,10 +119,10 @@ class Pace400M(Screen):
 
         self.add_widget(layout)
 
-    def go_next(self):
+    def go_next(self, instance):
         self.manager.current = "Pace100M"
 
-    def go_back(self):
+    def go_back(self, instance):
         self.manager.current = "swim"
 
 class Pace100M(Screen):
@@ -154,7 +154,7 @@ class Pace100M(Screen):
 
         self.add_widget(layout)
 
-    def go_next(self):
+    def go_next(self, instance):
         selected.remove('swim')
         print(selected)
         length = len(selected)
@@ -164,5 +164,5 @@ class Pace100M(Screen):
         if not selected:
             self.manager.current = "intro"
 
-    def go_back(self):
+    def go_back(self, instance):
         self.manager.current = "swim"

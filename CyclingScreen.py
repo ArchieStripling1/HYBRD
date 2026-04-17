@@ -43,7 +43,7 @@ class CyclingScreen(Screen):
 
         self.add_widget(layout)
 
-    def go_next(self):
+    def go_next(self, instance):
         CyclingDistance = float(self.input.text)
         WeeklyDistance = float(self.input2.text)
         if 0 <= CyclingDistance < 50:
@@ -54,7 +54,7 @@ class CyclingScreen(Screen):
             self.manager.current = "Cycling100K"
 
 
-    def go_back(self):
+    def go_back(self, instance):
         self.manager.current = "sport"
 
 class Cycling100K(Screen):
@@ -86,10 +86,10 @@ class Cycling100K(Screen):
 
         self.add_widget(layout)
 
-    def go_next(self):
+    def go_next(self, instance):
         self.manager.current = "Cycling50K"
 
-    def go_back(self):
+    def go_back(self, instance):
         self.manager.current = "swim"
 
 class Cycling50K(Screen):
@@ -121,10 +121,10 @@ class Cycling50K(Screen):
 
         self.add_widget(layout)
 
-    def go_next(self):
+    def go_next(self, instance):
         self.manager.current = "Cycling10K"
 
-    def go_back(self):
+    def go_back(self, instance):
         self.manager.current = "swim"
 
 class Cycling10K(Screen):
@@ -156,7 +156,7 @@ class Cycling10K(Screen):
 
         self.add_widget(layout)
 
-    def go_next(self):
+    def go_next(self, instance):
         selected.remove('cycle')
         print(selected)
         length = len(selected)
@@ -167,5 +167,5 @@ class Cycling10K(Screen):
             self.manager.current = "intro"
 
 
-    def go_back(self):
+    def go_back(self, instance):
         self.manager.current = "swim"
