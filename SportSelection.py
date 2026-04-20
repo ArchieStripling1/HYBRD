@@ -7,12 +7,7 @@ selected = []
 
 class SportSelectionScreen(Screen):
     def __init__(self, **kwargs):
-
-
-
         super().__init__(**kwargs) # setup Kivy screen
-
-
 
         layout = BoxLayout(
             orientation='vertical',
@@ -20,12 +15,14 @@ class SportSelectionScreen(Screen):
             padding=40
         )
 
+        # Header
         title = Label(
             text="What are you interested in?",
             font_size=32,
             size_hint=(1, 0.2)
         )
 
+        # Buttons
         run_btn = Button(
             text="Running",
             font_size=24,
@@ -50,10 +47,10 @@ class SportSelectionScreen(Screen):
             size_hint=(1, 0.2)
         )
 
+        # Bind Buttons
         run_btn.bind(on_press=self.select_running)
         cycle_btn.bind(on_press=self.select_cycle)
         swim_btn.bind(on_press=self.select_swim)
-
         next_btn.bind(on_press=self.go_next)
 
         layout.add_widget(title)
@@ -64,6 +61,7 @@ class SportSelectionScreen(Screen):
 
         self.add_widget(layout)
 
+    # If running is not in selected add it to selected, if it is in selected remove it.
     @staticmethod
     def select_running(instance):
         if "running" not in selected:
@@ -73,6 +71,7 @@ class SportSelectionScreen(Screen):
             selected.remove("running")
             print("Selected:", selected)
 
+    # If cycle is not in selected add it to selected, if it is in selected remove it.
     @staticmethod
     def select_cycle(instance):
         if "cycle" not in selected:
@@ -82,6 +81,7 @@ class SportSelectionScreen(Screen):
             selected.remove("cycle")
             print("Selected:", selected)
 
+    # If swim is not in selected add it to selected, if it is in selected remove it.
     @staticmethod
     def select_swim(instance):
         if "swim" not in selected:

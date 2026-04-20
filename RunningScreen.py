@@ -13,6 +13,7 @@ class RunningScreen(Screen):
 
         layout = BoxLayout(orientation='vertical', padding=30, spacing=30)
 
+        # Header
         title = Label(
             text="Running Profile",
             font_size=34,
@@ -26,6 +27,8 @@ class RunningScreen(Screen):
         longest_label = Label(text="Longest Run (km)", font_size=20)
 
         self.longest_value = Label(text="0 km", font_size=26)
+
+        # Slider
         self.longest_slider = Slider(min=1, max=60, value=0)
         self.longest_slider.bind(value=self.update_longest)
 
@@ -42,6 +45,7 @@ class RunningScreen(Screen):
 
         self.weekly_value = Label(text="0 km", font_size=26)
 
+        # Slider
         self.weekly_slider = Slider(min=0, max=150, value=0)
         self.weekly_slider.bind(value=self.update_weekly)
 
@@ -57,6 +61,7 @@ class RunningScreen(Screen):
         back_btn = Button(text="Previous", font_size=20)
         next_btn = Button(text="Next", font_size=20)
 
+        # Bind Buttons
         back_btn.bind(on_press=self.go_back)
         next_btn.bind(on_press=self.go_next)
 
@@ -67,8 +72,11 @@ class RunningScreen(Screen):
 
         self.add_widget(layout)
 
+    # Update Slider Value
     def update_longest(self, instance, value):
         self.longest_value.text = f"{int(value)} km"
+
+    # Update Slider Value
 
     def update_weekly(self, instance, value):
         self.weekly_value.text = f"{int(value)} km"
@@ -96,6 +104,7 @@ class RunningTimeScreen(Screen):
 
         layout = BoxLayout(orientation='vertical', padding=30, spacing=30)
 
+        #Enter Longest Distance Time
         title = Label(
             text=f"Enter your {distance} time",
             font_size=30
@@ -107,10 +116,14 @@ class RunningTimeScreen(Screen):
             size_hint=(1, 0.2)
         )
 
+        # Buttons
+
         btn_box = BoxLayout(size_hint=(1, 0.2), spacing=20)
 
         back_btn = Button(text="Previous")
         next_btn = Button(text="Next")
+
+        # Bind Buttons
 
         back_btn.bind(on_press=self.go_back)
         next_btn.bind(on_press=self.go_next)
@@ -127,6 +140,9 @@ class RunningTimeScreen(Screen):
     def go_next(self, instance):
         selected.remove('running')
         print(selected)
+
+        # For each sport go through process
+
         length = len(selected)
         for i in range(length):
             self.manager.current = selected[i]

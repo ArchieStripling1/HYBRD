@@ -19,12 +19,14 @@ class IntroScreen(Screen):
             size_hint=(1, 0.2)
         )
 
+        # Buttons
         next_btn = Button(
             text="Next",
             font_size=24,
             size_hint=(1, 0.2)
         )
 
+        # Bind Buttons
         next_btn.bind(on_press=self.go_next)
 
         layout.add_widget(title)
@@ -32,5 +34,6 @@ class IntroScreen(Screen):
 
         self.add_widget(layout)
 
+    # Go to next page.
     def go_next(self, instance):
         self.manager.current = "sport"

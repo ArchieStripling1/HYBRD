@@ -12,6 +12,7 @@ class RaceScreen(Screen):
 
         layout = BoxLayout(orientation='vertical', padding=20, spacing=20)
 
+        # Header
         title = Label(
             text="Select Your Race",
             font_size=36,
@@ -98,6 +99,7 @@ class RaceScreen(Screen):
             bold=True
         )
 
+    # Create Button for each race value
     def create_button(self, text, value):
         btn = Button(
             text=text,
@@ -109,11 +111,12 @@ class RaceScreen(Screen):
         btn.bind(on_press=lambda instance: self.select_race(value))
         return btn
 
+
     def select_race(self, race_value):
         self.selected_race = race_value
         print("Selected race:", race_value)
 
-
+    # go to first in queue of selected sports
     def go_next(self, instance):
         self.manager.current = selected[0]
 
