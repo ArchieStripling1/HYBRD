@@ -9,10 +9,14 @@ from RunningScreen import RunningScreen, RunningTimeScreen
 from CyclingScreen import CyclingScreen, CyclingTimeScreen
 from SwimmingScreen import SwimmingScreen, SwimmingPace
 from RaceScreen import RaceScreen
+from BuildPlanScreen import BuildPlan
 
 
 class MainApp(App):
     def build(self):
+
+        self.data = {}  #  store everything here
+
         sm = ScreenManager()
 
         sm.add_widget(IntroScreen(name="intro"))
@@ -63,6 +67,7 @@ class MainApp(App):
             distance="100K"
         ))
 
+        sm.add_widget(BuildPlan(name="BuildPlan"))
 
 
         return sm

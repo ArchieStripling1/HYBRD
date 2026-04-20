@@ -5,6 +5,8 @@ from kivy.uix.scrollview import ScrollView
 from kivy.uix.textinput import TextInput
 from kivy.uix.screenmanager import Screen
 from SportSelection import selected
+from kivy.app import App
+
 
 class RaceScreen(Screen):
     def __init__(self, **kwargs):
@@ -114,6 +116,7 @@ class RaceScreen(Screen):
 
     def select_race(self, race_value):
         self.selected_race = race_value
+        App.get_running_app().data["race"] = race_value
         print("Selected race:", race_value)
 
     # go to first in queue of selected sports

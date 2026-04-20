@@ -148,7 +148,7 @@ class RunningTimeScreen(Screen):
             self.manager.current = selected[i]
 
         if not selected:
-            self.manager.current = "intro"
+            self.manager.current = "BuildPlan"
 
     def go_back(self, instance):
         self.manager.current = "race"
