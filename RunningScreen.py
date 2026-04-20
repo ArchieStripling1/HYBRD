@@ -26,7 +26,6 @@ class RunningScreen(Screen):
         longest_label = Label(text="Longest Run (km)", font_size=20)
 
         self.longest_value = Label(text="0 km", font_size=26)
-
         self.longest_slider = Slider(min=1, max=60, value=0)
         self.longest_slider.bind(value=self.update_longest)
 

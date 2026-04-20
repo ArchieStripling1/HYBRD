@@ -6,7 +6,7 @@ from IntroScreen import IntroScreen
 from SportSelection import SportSelectionScreen
 from RunningScreen import RunningScreen, RunningTimeScreen
 from CyclingScreen import CyclingScreen, Cycling100K, Cycling50K, Cycling10K
-from SwimmingScreen import SwimmingScreen, Pace1000M, Pace400M, Pace100M
+from SwimmingScreen import SwimmingScreen, SwimmingPace
 from RaceScreen import RaceScreen
 
 
@@ -32,10 +32,17 @@ class MainApp(App):
         sm.add_widget(RunningTimeScreen(
             name="RunningTime5k",
             distance="5K"))
-
-        sm.add_widget(Pace1000M(name="Pace1000M"))
-        sm.add_widget(Pace400M(name="Pace400M"))
-        sm.add_widget(Pace100M(name="Pace100M"))
+        sm.add_widget(SwimmingPace(
+            name="Pace100M",
+            distance="100M"))
+        sm.add_widget(SwimmingPace(
+            name="Pace400M",
+            distance="400M"
+        ))
+        sm.add_widget(SwimmingPace(
+            name="Pace1000M",
+            distance="1000M"
+        ))
         sm.add_widget(Cycling100K(name="Cycling100K"))
         sm.add_widget(Cycling50K(name="Cycling50K"))
         sm.add_widget(Cycling10K(name="Cycling10K"))
