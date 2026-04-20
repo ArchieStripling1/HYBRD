@@ -1,6 +1,7 @@
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
+from kivy.uix.slider import Slider
 from kivy.uix.textinput import TextInput
 from kivy.uix.screenmanager import Screen
 from SportSelection import selected
@@ -8,45 +9,73 @@ from SportSelection import selected
 
 class RunningScreen(Screen):
     def __init__(self, **kwargs):
-        super().__init__(**kwargs) # setup Kivy screen
+        super().__init__(**kwargs)
 
-        layout = BoxLayout(orientation='vertical', padding=40)
-        self.input = TextInput(font_size=24, size_hint=(1, 0.2), multiline=False)
-        label = Label(text="Enter your longest run (km)", font_size=24)
-        label1 = Label(text="Enter your weekly Average (KM)", font_size=24)
-        self.input2 = TextInput(font_size=24, size_hint=(1, 0.2), multiline=False)
+        layout = BoxLayout(orientation='vertical', padding=30, spacing=30)
 
-
-
-        layout.add_widget(label)
-        layout.add_widget(self.input)
-        layout.add_widget(label1)
-        layout.add_widget(self.input2)
-
-
-        back_btn = Button(
-            text="Previous",
-            font_size=24,
-            size_hint=(1, 0.2)
+        title = Label(
+            text="Running Profile",
+            font_size=34,
+            size_hint=(1, 0.15),
+            bold=True
         )
-        next_btn = Button(
-            text="Next",
-            font_size=24,
-            size_hint=(1, 0.2)
-        )
+        layout.add_widget(title)
 
-        next_btn.bind(on_press=self.go_next)
+        # Longest Run
+        longest_box = BoxLayout(orientation='vertical', spacing=10)
+        longest_label = Label(text="Longest Run (km)", font_size=20)
+
+        self.longest_value = Label(text="0 km", font_size=26)
+
+        self.longest_slider = Slider(min=1, max=60, value=0)
+        self.longest_slider.bind(value=self.update_longest)
+
+        longest_box.add_widget(longest_label)
+        longest_box.add_widget(self.longest_value)
+        longest_box.add_widget(self.longest_slider)
+
+        layout.add_widget(longest_box)
+
+        # Weekly Distance
+        weekly_box = BoxLayout(orientation='vertical', spacing=10)
+
+        weekly_label = Label(text="Weekly Distance (km)", font_size=20)
+
+        self.weekly_value = Label(text="0 km", font_size=26)
+
+        self.weekly_slider = Slider(min=0, max=150, value=0)
+        self.weekly_slider.bind(value=self.update_weekly)
+
+        weekly_box.add_widget(weekly_label)
+        weekly_box.add_widget(self.weekly_value)
+        weekly_box.add_widget(self.weekly_slider)
+
+        layout.add_widget(weekly_box)
+
+        # Buttons
+        btn_box = BoxLayout(size_hint=(1, 0.2), spacing=20)
+
+        back_btn = Button(text="Previous", font_size=20)
+        next_btn = Button(text="Next", font_size=20)
+
         back_btn.bind(on_press=self.go_back)
+        next_btn.bind(on_press=self.go_next)
 
-        layout.add_widget(back_btn)
-        layout.add_widget(next_btn)
+        btn_box.add_widget(back_btn)
+        btn_box.add_widget(next_btn)
+
+        layout.add_widget(btn_box)
 
         self.add_widget(layout)
 
+    def update_longest(self, instance, value):
+        self.longest_value.text = f"{int(value)} km"
+
+    def update_weekly(self, instance, value):
+        self.weekly_value.text = f"{int(value)} km"
 
     def go_next(self, instance):
-        longestDistance = float(self.input.text)
-        weeklyDistance = float(self.input2.text)
+        longestDistance = int(self.longest_slider.value)
 
         if 5 <= longestDistance < 10:
             self.manager.current = "RunningTime5k"
@@ -61,141 +90,38 @@ class RunningScreen(Screen):
         self.manager.current = "sport"
 
 
-class RunningTimeMarathon(Screen):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs) # setup Kivy screen
-
-        layout = BoxLayout(orientation='vertical', padding=40)
-        label = Label(text="What is your fastest Marathon time (HH:MM:SS)", font_size=24)
-        MarathonTime = TextInput(font_size=24, size_hint=(1, 0.2), multiline=False)
-        layout.add_widget(label)
-        layout.add_widget(MarathonTime)
+class RunningTimeScreen(Screen):
+    def __init__(self, distance, **kwargs):
+        super().__init__(**kwargs)
 
 
-        back_btn = Button(
-            text="Previous",
-            font_size=24,
-            size_hint=(1, 0.2)
+        layout = BoxLayout(orientation='vertical', padding=30, spacing=30)
+
+        title = Label(
+            text=f"Enter your {distance} time",
+            font_size=30
         )
-        next_btn = Button(
-            text="Next",
+
+        self.input = TextInput(
+            hint_text="HH:MM:SS",
             font_size=24,
             size_hint=(1, 0.2)
         )
 
-        next_btn.bind(on_press=self.go_next)
+        btn_box = BoxLayout(size_hint=(1, 0.2), spacing=20)
+
+        back_btn = Button(text="Previous")
+        next_btn = Button(text="Next")
+
         back_btn.bind(on_press=self.go_back)
-
-        layout.add_widget(back_btn)
-        layout.add_widget(next_btn)
-
-        self.add_widget(layout)
-
-    def go_next(self, instance):
-        self.manager.current = "RunningTimeHalf"
-
-    def go_back(self, instance):
-        self.manager.current = "running"
-
-class RunningTimeHalf(Screen):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs) # setup Kivy screen
-
-        layout = BoxLayout(orientation='vertical', padding=40)
-        label = Label(text="What is your fastest Half Marathon time (HH:MM:SS)", font_size=24)
-        HalfMarathonTime = TextInput(font_size=24, size_hint=(1, 0.2), multiline=False)
-        layout.add_widget(label)
-        layout.add_widget(HalfMarathonTime)
-
-
-        back_btn = Button(
-            text="Previous",
-            font_size=24,
-            size_hint=(1, 0.2)
-        )
-        next_btn = Button(
-            text="Next",
-            font_size=24,
-            size_hint=(1, 0.2)
-        )
-
         next_btn.bind(on_press=self.go_next)
-        back_btn.bind(on_press=self.go_back)
 
-        layout.add_widget(back_btn)
-        layout.add_widget(next_btn)
+        btn_box.add_widget(back_btn)
+        btn_box.add_widget(next_btn)
 
-        self.add_widget(layout)
-
-    def go_next(self, instance):
-        self.manager.current = "RunningTime10k"
-
-    def go_back(self, instance):
-        self.manager.current = "running"
-
-class RunningTime10k(Screen):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs) # setup Kivy screen
-
-        layout = BoxLayout(orientation='vertical', padding=40)
-        label = Label(text="What is your fastest 10KM time (HH:MM:SS)", font_size=24)
-        KM10Time = TextInput(font_size=24, size_hint=(1, 0.2), multiline=False)
-        layout.add_widget(label)
-        layout.add_widget(KM10Time)
-
-
-        back_btn = Button(
-            text="Previous",
-            font_size=24,
-            size_hint=(1, 0.2)
-        )
-        next_btn = Button(
-            text="Next",
-            font_size=24,
-            size_hint=(1, 0.2)
-        )
-
-        next_btn.bind(on_press=self.go_next)
-        back_btn.bind(on_press=self.go_back)
-
-        layout.add_widget(back_btn)
-        layout.add_widget(next_btn)
-
-        self.add_widget(layout)
-
-    def go_next(self, instance):
-        self.manager.current = "RunningTime5k"
-
-    def go_back(self, instance):
-        self.manager.current = "running"
-
-class RunningTime5k(Screen):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs) # setup Kivy screen
-
-        layout = BoxLayout(orientation='vertical', padding=40)
-        label = Label(text="What is your fastest 5KM time (HH:MM:SS)", font_size=24)
-        KM5Time = TextInput(font_size=24, size_hint=(1, 0.2), multiline=False)
-        layout.add_widget(label)
-        layout.add_widget(KM5Time)
-
-
-        back_btn = Button(
-            text="Previous",
-            font_size=24,
-            size_hint=(1, 0.2)
-        )
-        next_btn = Button(
-            text="Next",
-            font_size=24,
-            size_hint=(1, 0.2)
-        )
-
-        next_btn.bind(on_press=self.go_next)
-        back_btn.bind(on_press=self.go_back)
-
-        layout.add_widget(back_btn)
-        layout.add_widget(next_btn)
+        layout.add_widget(title)
+        layout.add_widget(self.input)
+        layout.add_widget(btn_box)
 
         self.add_widget(layout)
 
@@ -209,17 +135,5 @@ class RunningTime5k(Screen):
         if not selected:
             self.manager.current = "intro"
 
-
-
     def go_back(self, instance):
-        self.manager.current = "running"
-
-class Display(Screen):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)  # setup Kivy screen
-
-        layout = BoxLayout(orientation='vertical', padding=40)
-        label = Label(text = "Display", font_size=24)
-        layout.add_widget(label)
-
-        self.add_widget(layout)
+        self.manager.current = "race"

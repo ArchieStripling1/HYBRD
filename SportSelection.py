@@ -92,6 +92,5 @@ class SportSelectionScreen(Screen):
             print("Selected:", selected)
 
     def go_next(self, instance):
-        if selected is not None: #this does not work and even doing it by length doesn't work.
-            self.manager.current = selected[0]
+        self.manager.current = "race"
 
