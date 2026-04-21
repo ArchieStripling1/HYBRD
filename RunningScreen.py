@@ -1,3 +1,4 @@
+from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
@@ -46,7 +47,7 @@ class RunningScreen(Screen):
         self.weekly_value = Label(text="0 km", font_size=26)
 
         # Slider
-        self.weekly_slider = Slider(min=0, max=150, value=0)
+        self.weekly_slider = Slider(min=1, max=150, value=0)
         self.weekly_slider.bind(value=self.update_weekly)
 
         weekly_box.add_widget(weekly_label)
@@ -83,6 +84,9 @@ class RunningScreen(Screen):
 
     def go_next(self, instance):
         longestDistance = int(self.longest_slider.value)
+        weeklyDistance = int(self.weekly_slider.value)
+        App.get_running_app().data["Longest_Run"] = longestDistance
+        App.get_running_app().data["Weekly_Distance"] = weeklyDistance
 
         if 5 <= longestDistance < 10:
             self.manager.current = "RunningTime5k"
@@ -113,8 +117,12 @@ class RunningTimeScreen(Screen):
         self.input = TextInput(
             hint_text="HH:MM:SS",
             font_size=24,
-            size_hint=(1, 0.2)
+            size_hint=(1, 0.2),
+            multiline = False
         )
+        self.input.bind(on_text_validate=self.update_input)
+
+
 
         # Buttons
 
@@ -136,6 +144,11 @@ class RunningTimeScreen(Screen):
         layout.add_widget(btn_box)
 
         self.add_widget(layout)
+
+    def update_input(self, instance):
+        PB = self.input.text
+        print(PB)
+        App.get_running_app().data["CurrentPB"] = PB
 
     def go_next(self, instance):
         selected.remove('running')

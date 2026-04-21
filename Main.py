@@ -26,7 +26,7 @@ class MainApp(App):
         sm.add_widget(CyclingScreen(name="cycle"))
         sm.add_widget(SwimmingScreen(name="swim"))
 
-        # Running Screens
+        # Running Screens2
         sm.add_widget(RunningTimeScreen(
             name="RunningTimeMarathon",
             distance="Marathon"))

@@ -1,5 +1,6 @@
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
+from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.textinput import TextInput
@@ -24,6 +25,7 @@ class BuildPlan(Screen):
         layout.add_widget(title)
 
         #Race Type
+
         self.race_label = Label(
             text="Your Race is: ",
             font_size=20
@@ -33,10 +35,25 @@ class BuildPlan(Screen):
         #Distance
 
         #Current Weekly Mileage
+        self.weekly_label = Label(
+            text="Your Current Weekly Mileage is: ",
+            font_size=20
+        )
+        layout.add_widget(self.weekly_label)
 
         #Current Longest Effort
+        self.longest_label = Label(
+            text="Your Longest Run is: ",
+            font_size=20
+        )
+        layout.add_widget(self.longest_label)
 
         #Current PB
+        self.currentPB_label = Label(
+            text="Your Current PB is: ",
+            font_size=20
+        )
+        layout.add_widget(self.currentPB_label)
 
         #Length of Plan
 
@@ -47,11 +64,19 @@ class BuildPlan(Screen):
         #Long Distance Effort Day
 
         #Build Plan Button
+
         self.add_widget(layout)
 
     def on_pre_enter(self):
         data = App.get_running_app().data
         race = data.get("race")
+        weeklyDistance = data.get("Weekly_Distance")
+        longestRun = data.get("Longest_Run")
+        currentPB = data.get("CurrentPB")
+
 
         self.race_label.text = f"🏁 Race: {race.upper()}"
+        self.longest_label.text = f"🏁 Longest Run: {longestRun} KM"
+        self.weekly_label.text = f"🏁 Current Weekly Mileage: {weeklyDistance} KM"
+        self.currentPB_label.text = f"🏁 Your Current {race.upper()} PB is: {currentPB}"
 
