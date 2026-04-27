@@ -69,7 +69,7 @@ class RaceScreen(Screen):
 
         for text, value in [
             ("Half-IronMan", "ironman_70.3"),
-            ("Full-IronMan", "ironman_140.6.3"),
+            ("Full-IronMan", "ironman_140.6"),
         ]:
             content.add_widget(self.create_button(text, value))
 

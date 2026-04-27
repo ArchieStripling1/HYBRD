@@ -1,3 +1,4 @@
+from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
@@ -84,6 +85,9 @@ class SwimmingScreen(Screen):
 
     def go_next(self, instance):
         SwimmingDistance = int(self.longest_slider.value)
+        weeklySwimming = int(self.weekly_slider.value)
+        App.get_running_app().data["Longest_Swim"] = SwimmingDistance
+        App.get_running_app().data["Weekly_Swimming"] = weeklySwimming
 
         if 100 <= SwimmingDistance <= 500:
             self.manager.current = "Pace100M"
@@ -111,8 +115,10 @@ class SwimmingPace(Screen):
         self.input = TextInput(
             hint_text="HH:MM:SS",
             font_size=24,
-            size_hint=(1, 0.2)
+            size_hint=(1, 0.2),
+            multiline = False
         )
+        self.input.bind(on_text_validate=self.update_input)
 
         #Buttons
         btn_box = BoxLayout(size_hint=(1, 0.2), spacing=20)
@@ -133,6 +139,10 @@ class SwimmingPace(Screen):
 
         self.add_widget(layout)
 
+    def update_input(self, instance):
+        PB = self.input.text
+        App.get_running_app().data["CurrentSwimPB"] = PB
+
     def go_next(self, instance):
         selected.remove('swim')
         print(selected)
@@ -143,7 +153,7 @@ class SwimmingPace(Screen):
             self.manager.current = selected[i]
 
         if not selected:
-            self.manager.current = "intro"
+            self.manager.current = "BuildPlan"
 
     def go_back(self, instance):
         self.manager.current = "race"

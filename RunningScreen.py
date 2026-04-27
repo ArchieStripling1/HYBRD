@@ -147,8 +147,7 @@ class RunningTimeScreen(Screen):
 
     def update_input(self, instance):
         PB = self.input.text
-        print(PB)
-        App.get_running_app().data["CurrentPB"] = PB
+        App.get_running_app().data["CurrentRunPB"] = PB
 
     def go_next(self, instance):
         selected.remove('running')

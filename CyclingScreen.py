@@ -1,3 +1,4 @@
+from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
@@ -84,6 +85,9 @@ class CyclingScreen(Screen):
 
     def go_next(self, instance):
         CyclingDistance = int(self.longest_slider.value)
+        weeklyCycling = int(self.weekly_slider.value)
+        App.get_running_app().data["Longest_Cycle"] = CyclingDistance
+        App.get_running_app().data["Weekly_Cycle"] = weeklyCycling
         if 0 <= CyclingDistance < 50:
             self.manager.current = "Cycling10K"
         elif 50 <= CyclingDistance < 100:
@@ -111,8 +115,10 @@ class CyclingTimeScreen(Screen):
         self.input = TextInput(
             hint_text="HH:MM:SS",
             font_size=24,
-            size_hint=(1, 0.2)
+            size_hint=(1, 0.2),
+            multiline = False
         )
+        self.input.bind(on_text_validate=self.update_input)
 
         #Buttons
         btn_box = BoxLayout(size_hint=(1, 0.2), spacing=20)
@@ -133,6 +139,10 @@ class CyclingTimeScreen(Screen):
 
         self.add_widget(layout)
 
+    def update_input(self, instance):
+        PB = self.input.text
+        App.get_running_app().data["CurrentCyclePB"] = PB
+
     def go_next(self, instance):
         selected.remove('cycle')
         print(selected)
@@ -143,7 +153,7 @@ class CyclingTimeScreen(Screen):
             self.manager.current = selected[i]
 
         if not selected:
-            self.manager.current = "intro"
+            self.manager.current = "BuildPlan"
 
     def go_back(self, instance):
         self.manager.current = "race"
