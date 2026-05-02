@@ -12,7 +12,7 @@ class BuildPlan(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs) # setup Kivy screen
 
-        layout = BoxLayout(orientation='vertical', padding=20, spacing=20)
+        layout = BoxLayout(orientation='vertical', padding=25, spacing=25)
 
         # Header
         title = Label(
@@ -26,47 +26,84 @@ class BuildPlan(Screen):
 
         #Race Type
 
-        self.race_label = Label(
-            text="Your Race is: ",
-            font_size=20
-        )
+        self.race_label = Label(font_size=22)
 
-        layout.add_widget(self.race_label)
         #Distance
 
-
         # Current Weekly Mileage
-        self.weekly_label = Label(
-            text="Your Current Weekly Mileage is: ",
-            font_size=20
-        )
-        layout.add_widget(self.weekly_label)
+        self.weekly_label = Label(font_size=20)
 
         # Current Longest Effort
-        self.longest_label = Label(
-            text="Your Longest Run is: ",
-            font_size=20
-        )
-        layout.add_widget(self.longest_label)
+        self.longest_label = Label(font_size=20)
 
         # Current PB
-        self.currentPB_label = Label(
-            text="Your Current PB is: ",
-            font_size=20
-        )
-        layout.add_widget(self.currentPB_label)
-
+        self.currentPB_label = Label(font_size=20)
 
         #Length of Plan
+        length = Label(
+            text="How many weeks do you want this plan to be: ",
+            font_size=20
+        )
+        self.planLength = TextInput(
+            hint_text="No. Weeks",
+            font_size=22,
+            size_hint=(1, None),
+            height=55,
+            multiline=False,
+            background_normal="",
+            background_active="",
+            background_color=(1, 1, 1, 1),
+            foreground_color=(0, 0, 0, 1),
+            padding=[10, 15]
+        )
 
-        #Sessions per activity per week
+        self.planLength.bind(on_text_validate=self.update_length)
 
-        #Days Available
+        # Sessions per activity per week
+        sessions = Label(
+            text="How many sessions do you want to do a week: ",
+            font_size=20
+        )
+        self.noSessions = TextInput(
+            hint_text="No. Sessions",
+            font_size=22,
+            size_hint=(1, None),
+            height=55,
+            multiline=False,
+            background_normal="",
+            background_active="",
+            background_color=(1, 1, 1, 1),
+            foreground_color=(0, 0, 0, 1),
+            padding=[10, 15]
+        )
 
-        #Long Distance Effort Day
+        self.noSessions.bind(on_text_validate=self.update_sessions)
 
-        #Build Plan Button
+        # Days Available
+        daysAvailable = Label(
+            text="What days are you available for Running: ",
+            font_size=20
+        )
 
+        # Long Distance Effort Day
+        longRunDay = Label(
+            text="What day do you want to do your long run: ",
+            font_size=20
+        )
+
+        # Build Plan Button
+
+
+        layout.add_widget(self.race_label)
+        layout.add_widget(self.weekly_label)
+        layout.add_widget(self.longest_label)
+        layout.add_widget(self.currentPB_label)
+        layout.add_widget(length)
+        layout.add_widget(self.planLength)
+        layout.add_widget(sessions)
+        layout.add_widget(self.noSessions)
+        layout.add_widget(daysAvailable)
+        layout.add_widget(longRunDay)
         self.add_widget(layout)
 
     def on_enter(self):
@@ -76,7 +113,7 @@ class BuildPlan(Screen):
         # Race Types
         raceRun = ['5k', '10k', 'half', 'marathon']
         raceCycle = ['cycle_20', 'cycle_50', 'cycle_100']
-        raceSwim = ['swim_1000' 'swim_2000', 'swim_4000']
+        raceSwim = ['swim_1000', 'swim_2000', 'swim_4000']
         raceTriathlon = ['ironman_70.3', 'ironman_140.6']
 
         weeklyRunDistance = data.get("Weekly_Distance")
@@ -126,3 +163,8 @@ class BuildPlan(Screen):
             self.weekly_label.text = f"🏁 Current Weekly Cycling Distance: {weeklyCycleDistance} KM"
             self.weekly_label.text = f"🏁 Current Weekly Swimming Distance: {weeklySwimDistance} M"
 
+    def update_length(self, instance):
+        App.get_running_app().data["CurrentPlanLength"] = self.planLength.text
+
+    def update_sessions(self, instance):
+        App.get_running_app().data["CurrentAmountSessions"] = self.noSessions.text
