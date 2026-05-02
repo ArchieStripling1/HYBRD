@@ -2,6 +2,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
+from kivy.uix.togglebutton import ToggleButton
 
 selected = []
 
@@ -23,25 +24,25 @@ class SportSelectionScreen(Screen):
         )
 
         # Buttons
-        run_btn = Button(
+        run_btn = ToggleButton(
             text="Running",
             font_size=24,
             size_hint=(1, 0.2)
         )
 
-        cycle_btn = Button(
+        cycle_btn = ToggleButton(
             text="Cycling",
             font_size=24,
             size_hint=(1, 0.2)
         )
 
-        swim_btn = Button(
+        swim_btn = ToggleButton(
             text="Swimming",
             font_size=24,
             size_hint=(1, 0.2)
         )
 
-        next_btn = Button(
+        next_btn = ToggleButton(
             text="Next",
             font_size=24,
             size_hint=(1, 0.2)
