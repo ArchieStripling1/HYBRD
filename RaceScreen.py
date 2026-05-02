@@ -4,6 +4,7 @@ from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.textinput import TextInput
 from kivy.uix.screenmanager import Screen
+from kivy.uix.togglebutton import ToggleButton
 from SportSelection import selected
 from kivy.app import App
 
@@ -103,7 +104,7 @@ class RaceScreen(Screen):
 
     # Create Button for each race value
     def create_button(self, text, value):
-        btn = Button(
+        btn = ToggleButton(
             text=text,
             size_hint=(1, None),
             height=60,
