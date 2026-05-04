@@ -5,6 +5,8 @@ from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.textinput import TextInput
 from kivy.uix.screenmanager import Screen
+from kivy.uix.togglebutton import ToggleButton
+
 from SportSelection import selected
 from kivy.app import App
 
@@ -14,7 +16,7 @@ class BuildPlan(Screen):
 
         layout = BoxLayout(orientation='vertical', padding=25, spacing=25)
 
-        # Header
+            # Header
         title = Label(
             text="Build Plan",
             font_size=36,
@@ -24,25 +26,36 @@ class BuildPlan(Screen):
 
         layout.add_widget(title)
 
+        scroll = ScrollView(size_hint=(1, 0.75))
+        content = BoxLayout(
+            orientation='vertical',
+            spacing=20,
+            size_hint_y=None
+        )
+        content.bind(minimum_height=content.setter('height'))
+
         #Race Type
 
-        self.race_label = Label(font_size=22)
+        self.race_label = Label(font_size=22, size_hint_y=None, height=30)
 
         #Distance
 
         # Current Weekly Mileage
-        self.weekly_label = Label(font_size=20)
+        self.weekly_label = Label(font_size=20, size_hint_y=None, height=30)
 
         # Current Longest Effort
-        self.longest_label = Label(font_size=20)
+        self.longest_label = Label(font_size=20, size_hint_y=None, height=30)
 
         # Current PB
-        self.currentPB_label = Label(font_size=20)
+        self.currentPB_label = Label(font_size=20, size_hint_y=None, height=30)
 
         #Length of Plan
         length = Label(
             text="How many weeks do you want this plan to be: ",
-            font_size=20
+            font_size=20,
+            size_hint_y=None,
+            height=30
+
         )
         self.planLength = TextInput(
             hint_text="No. Weeks",
@@ -84,6 +97,17 @@ class BuildPlan(Screen):
             text="What days are you available for Running: ",
             font_size=20
         )
+        days = ["Monday", "Tuesday", "Wednesday","Thursday", "Friday","Saturday","Sunday"]
+        grid = GridLayout(
+            rows=1,
+            cols=7,
+            size_hint_y=None,
+            height=60,
+            spacing=5
+        )
+
+        for day in days:
+            grid.add_widget(self.create_button(day))
 
         # Long Distance Effort Day
         longRunDay = Label(
@@ -94,16 +118,19 @@ class BuildPlan(Screen):
         # Build Plan Button
 
 
-        layout.add_widget(self.race_label)
-        layout.add_widget(self.weekly_label)
-        layout.add_widget(self.longest_label)
-        layout.add_widget(self.currentPB_label)
-        layout.add_widget(length)
-        layout.add_widget(self.planLength)
-        layout.add_widget(sessions)
-        layout.add_widget(self.noSessions)
-        layout.add_widget(daysAvailable)
-        layout.add_widget(longRunDay)
+        content.add_widget(self.race_label)
+        content.add_widget(self.weekly_label)
+        content.add_widget(self.longest_label)
+        content.add_widget(self.currentPB_label)
+        content.add_widget(length)
+        content.add_widget(self.planLength)
+        content.add_widget(sessions)
+        content.add_widget(self.noSessions)
+        content.add_widget(daysAvailable)
+        content.add_widget(grid)
+        content.add_widget(longRunDay)
+        scroll.add_widget(content)
+        layout.add_widget(scroll)
         self.add_widget(layout)
 
     def on_enter(self):
@@ -168,3 +195,14 @@ class BuildPlan(Screen):
 
     def update_sessions(self, instance):
         App.get_running_app().data["CurrentAmountSessions"] = self.noSessions.text
+
+    def create_button(self, day):
+        btn = ToggleButton(
+            text=day,
+            size_hint=(1, None),
+            height=60,
+            font_size=20,
+            background_color=(0.9, 0.9, 0.9, 1)
+        )
+        daysSelected= []
+        return btn
