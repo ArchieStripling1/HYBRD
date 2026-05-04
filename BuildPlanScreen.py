@@ -1,6 +1,7 @@
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.dropdown import DropDown
 from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.textinput import TextInput
@@ -13,6 +14,8 @@ from kivy.app import App
 class BuildPlan(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs) # setup Kivy screen
+
+        self.daysSelected = []
 
         layout = BoxLayout(orientation='vertical', padding=25, spacing=25)
 
@@ -106,6 +109,7 @@ class BuildPlan(Screen):
             spacing=5
         )
 
+
         for day in days:
             grid.add_widget(self.create_button(day))
 
@@ -114,9 +118,37 @@ class BuildPlan(Screen):
             text="What day do you want to do your long run: ",
             font_size=20
         )
+        #Creates Dropdown
+        dropdown = DropDown()
+
+        #For each day in days
+        for day in days:
+            btn = Button(
+                text=day,
+                size_hint_y=None,
+                height=44
+            )
+            #On button click it selects the text from the day and creates a button using an anonymous function
+            btn.bind(on_release=lambda btn: dropdown.select(btn.text))
+
+            dropdown.add_widget(btn)
+
+        self.longRunBtn = Button(
+            text="Select Day",
+            size_hint=(1, None),
+            height=50
+        )
+
+        self.longRunBtn.bind(on_release=dropdown.open)
+        #Dropdown uses x as the day and sets the long run day variable.
+        dropdown.bind(on_select=lambda instance, x: self.set_long_run_day(x))
 
         # Build Plan Button
-
+        buildPlanBtn = Button(
+            text="Build Plan",
+            size_hint=(1, None),
+            height=50
+        )
 
         content.add_widget(self.race_label)
         content.add_widget(self.weekly_label)
@@ -129,6 +161,8 @@ class BuildPlan(Screen):
         content.add_widget(daysAvailable)
         content.add_widget(grid)
         content.add_widget(longRunDay)
+        content.add_widget(self.longRunBtn)
+        content.add_widget((buildPlanBtn))
         scroll.add_widget(content)
         layout.add_widget(scroll)
         self.add_widget(layout)
@@ -204,5 +238,27 @@ class BuildPlan(Screen):
             font_size=20,
             background_color=(0.9, 0.9, 0.9, 1)
         )
-        daysSelected= []
+        btn.bind(on_press=lambda instance: self.toggle_day(instance, day))
         return btn
+
+    def toggle_day(self, instance, day):
+        if instance.state == "down":
+            instance.background_color = (0.2, 0.6, 1, 1)
+            if day not in self.daysSelected:
+                self.daysSelected.append(day)
+        else:
+            instance.background_color = (0.9, 0.9, 0.9, 1)
+            if day in self.daysSelected:
+                self.daysSelected.remove(day)
+
+        print("Selected days:", self.daysSelected)
+
+        # Save globally
+        App.get_running_app().data["AvailableDays"] = self.daysSelected
+
+    def set_long_run_day(self, day):
+        self.longRunBtn.text = day
+        App.get_running_app().data["LongRunDay"] = day
+        print("Long run day:", day)
+
+
