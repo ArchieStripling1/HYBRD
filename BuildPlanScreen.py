@@ -75,29 +75,10 @@ class BuildPlan(Screen):
 
         self.planLength.bind(on_text_validate=self.update_length)
 
-        # Sessions per activity per week
-        sessions = Label(
-            text="How many sessions do you want to do a week: ",
-            font_size=20
-        )
-        self.noSessions = TextInput(
-            hint_text="No. Sessions",
-            font_size=22,
-            size_hint=(1, None),
-            height=55,
-            multiline=False,
-            background_normal="",
-            background_active="",
-            background_color=(1, 1, 1, 1),
-            foreground_color=(0, 0, 0, 1),
-            padding=[10, 15]
-        )
-
-        self.noSessions.bind(on_text_validate=self.update_sessions)
 
         # Days Available
-        daysAvailable = Label(
-            text="What days are you available for Running: ",
+        activityDays = Label(
+            text="What days do you want to run: ",
             font_size=20
         )
         days = ["Monday", "Tuesday", "Wednesday","Thursday", "Friday","Saturday","Sunday"]
@@ -149,6 +130,7 @@ class BuildPlan(Screen):
             size_hint=(1, None),
             height=50
         )
+        buildPlanBtn.bind(on_press = self.build_plan)
 
         content.add_widget(self.race_label)
         content.add_widget(self.weekly_label)
@@ -156,9 +138,7 @@ class BuildPlan(Screen):
         content.add_widget(self.currentPB_label)
         content.add_widget(length)
         content.add_widget(self.planLength)
-        content.add_widget(sessions)
-        content.add_widget(self.noSessions)
-        content.add_widget(daysAvailable)
+        content.add_widget(activityDays)
         content.add_widget(grid)
         content.add_widget(longRunDay)
         content.add_widget(self.longRunBtn)
@@ -254,11 +234,12 @@ class BuildPlan(Screen):
         print("Selected days:", self.daysSelected)
 
         # Save globally
-        App.get_running_app().data["AvailableDays"] = self.daysSelected
+        App.get_running_app().data["ActivityDays"] = self.daysSelected
 
     def set_long_run_day(self, day):
         self.longRunBtn.text = day
         App.get_running_app().data["LongRunDay"] = day
         print("Long run day:", day)
 
-
+    def build_plan(self, instance):
+        self.manager.current = "plan"

@@ -10,6 +10,7 @@ from CyclingScreen import CyclingScreen, CyclingTimeScreen
 from SwimmingScreen import SwimmingScreen, SwimmingPace
 from RaceScreen import RaceScreen
 from BuildPlanScreen import BuildPlan
+from PlanPage import PlanPage
 
 
 class MainApp(App):
@@ -68,6 +69,7 @@ class MainApp(App):
         ))
 
         sm.add_widget(BuildPlan(name="BuildPlan"))
+        sm.add_widget(PlanPage(name="plan"))
 
 
         return sm
