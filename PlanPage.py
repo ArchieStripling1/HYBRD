@@ -18,7 +18,7 @@ class PlanPage(Screen):
     def on_enter(self):
         data = App.get_running_app().data
         plan_length = int(data.get("CurrentPlanLength", 0))
-        PB = float(data.get("CurrentPB", 2))
+        PB = float(data.get("CurrentRunPB", 2))
         race = data.get("race")
         longest_run = int(data.get("Longest_Run"))
         weekly_miles = int(data.get("Weekly_Distance"))
@@ -55,6 +55,7 @@ class PlanPage(Screen):
                 "max_long_run" : 34
             }
         }
+
         if race == "5k":
             race_pace = PB / 5
         elif race == "10k":
@@ -89,8 +90,6 @@ class PlanPage(Screen):
             else:
                 current_weekly_distance *= 1.05
 
-            # Alternate workout type each week
-
 
             for day in days:
                 # Default
@@ -123,8 +122,8 @@ class PlanPage(Screen):
 
                     workout = {
                         "type": "Long Run",
-                        "distance": long_run_distance,
-                        "pace": easy_pace
+                        "distance": int(long_run_distance),
+                        "pace": f"{easy_pace:.2f}/km"
                     }
                     plan[week_name][day] = workout
 
@@ -158,22 +157,21 @@ class PlanPage(Screen):
                         workout = {
                             "type": hard_type,
                             "session": session,
-                            "pace": workout_pace
+                            "pace": f"{workout_pace:.2f}/km"
                         }
                         plan[week_name][day] = workout
 
                     # Remaining = easy runs
                     else:
-                        # Round to the nearest whole number
-                        easy_distance = int(round(
-                            weekly_miles / len(activity_days) * 0.6,
-                            1
-                        ))
+                        easy_distance = (
+                            (current_weekly_distance - longest_run) / len(activity_days)
+                        )
+
                         # Create nested dict to store everything for the run
                         workout = {
                             "type": "Easy Run",
-                            "distance": easy_distance,
-                            "pace": easy_pace
+                            "distance": int(easy_distance),
+                            "pace": f"{easy_pace:.2f}/km"
                         }
                         plan[week_name][day] = workout
 
