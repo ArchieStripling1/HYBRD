@@ -17,9 +17,9 @@ class PlanPage(Screen):
 
     def on_enter(self):
         data = App.get_running_app().data
-        plan_length = int(data.get("CurrentPlanLength", 0))
-        PB = float(data.get("CurrentRunPB", 2))
         race = data.get("race")
+        plan_length = int(data.get("CurrentPlanLength", 0))
+        PB = float(data.get(f"{race}_pb", 2))
         longest_run = int(data.get("Longest_Run"))
         weekly_miles = int(data.get("Weekly_Distance"))
         activity_days = data.get("ActivityDays")
@@ -29,8 +29,8 @@ class PlanPage(Screen):
         #Days in the week
         days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
         interval_types = [
-            '1KM Repeats',
-            'Mile Repeats',
+            '1KM Repeats x 5',
+            'Mile Repeats x 3',
             'Pyramid Intervals'
         ]
         tempo_types =  [
@@ -41,36 +41,63 @@ class PlanPage(Screen):
             'Rolling 400s',
             'Tempo 4KM'
         ]
+        #Variable settings that change for each race.
         race_settings = {
             "5k": {
-                "max_long_run" : 12
+                "max_long_run" : 12,
+                "max_easy_run" : 8,
+                "speed": "fast"
             },
             "10k": {
-                "max_long_run" : 18
+                "max_long_run" : 18,
+                "max_easy_run" : 10,
+                "speed": "semi-fast"
+
             },
             "half": {
-                "max_long_run" : 28
+                "max_long_run" : 28,
+                "max_easy_run": 14,
+                "speed": "medium"
             },
             "marathon": {
-                "max_long_run" : 34
+                "max_long_run" : 34,
+                "max_easy_run": 18,
+                "speed": "slow"
             }
         }
-
+        print(PB)
+        # Work out what their race pace based off their last PB
         if race == "5k":
             race_pace = PB / 5
         elif race == "10k":
-            race_pace = PB / 10
+            # if user has not run that far it will get the PB that they have,
+            # not run a half-marathon yet so they will use their 10k PB for reference.
+            if PB == 2.0:
+                PB = float(data.get("5k_pb", 2))
+                race_pace = PB / 5
+            else:
+                race_pace = PB / 10
         elif race == "half":
-            race_pace = PB / 21.1
+            if PB == 2.0:
+                PB = float(data.get("10k_pb", 2))
+                race_pace = PB / 10
+            else:
+                race_pace = PB / 21.1
         elif race == "marathon":
-            race_pace = PB / 42.2
+            if PB == 2.0:
+                PB = float(data.get("half_pb", 2))
+                race_pace = PB / 21.1
+            else:
+                race_pace = PB / 42.2
 
+        #Find out different paces based off their PB
         easy_pace = round(race_pace + 1.2, 2)
         tempo_pace = round(race_pace + 0.25, 2)
         interval_pace = round(race_pace - 0.15, 2)
 
         #Dictionary for the plan.
         plan = {}
+        current_weekly_distance = 0
 
         #For week in range 1 to the length of the current plan
         for week in range(1, plan_length + 1):
@@ -79,16 +106,14 @@ class PlanPage(Screen):
 
             plan[week_name] = {}
 
-            current_weekly_distance = weekly_miles
-
             #Created a recovery week every 4 weeks which decrease the load
             recovery_week = False
 
             if week % 4 == 0:
                 recovery_week = True
-                current_weekly_distance *= 0.8
+                weekly_miles *= 0.8
             else:
-                current_weekly_distance *= 1.05
+                weekly_miles *= 1.05
 
 
             for day in days:
@@ -127,6 +152,9 @@ class PlanPage(Screen):
                     }
                     plan[week_name][day] = workout
 
+                    #Keep track of how far they have run this week.
+                    current_weekly_distance += long_run_distance
+
                 # Other running days
                 elif day in activity_days:
 
@@ -160,20 +188,29 @@ class PlanPage(Screen):
                             "pace": f"{workout_pace:.2f}/km"
                         }
                         plan[week_name][day] = workout
+                        current_weekly_distance += 8
 
                     # Remaining = easy runs
                     else:
                         easy_distance = (
-                            (current_weekly_distance - longest_run) / len(activity_days)
+                            (weekly_miles / len(activity_days))
                         )
+
+                        # Prevent going over max
+                        if easy_distance > race_settings[race]["max_easy_run"]:
+                            easy_distance = race_settings[race]["max_easy_run"]
+
+                        if recovery_week:
+                            easy_distance *= 0.8
 
                         # Create nested dict to store everything for the run
                         workout = {
                             "type": "Easy Run",
                             "distance": int(easy_distance),
-                            "pace": f"{easy_pace:.2f}/km"
+                            "pace": f"No faster than {easy_pace:.2f}/km"
                         }
                         plan[week_name][day] = workout
+                        current_weekly_distance += easy_distance
 
                     #No more than one hard run a week right now.
                     weekly_hard_run += 1
@@ -181,6 +218,8 @@ class PlanPage(Screen):
 
             # Reset for next week
             weekly_hard_run = 0
+            weekly_miles = current_weekly_distance
+            current_weekly_distance = 0
 
         App.get_running_app().data["GeneratedPlan"] = plan
 

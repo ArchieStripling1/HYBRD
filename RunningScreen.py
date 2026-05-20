@@ -105,33 +105,53 @@ class RunningTimeScreen(Screen):
     def __init__(self, distance, **kwargs):
         super().__init__(**kwargs)
 
-
+        #reachable dictionary of PBs for distances
+        self.inputs = {}
         layout = BoxLayout(orientation='vertical', padding=30, spacing=30)
 
-        #Enter Longest Distance Time
-        title = Label(
-            text=f"Enter your {distance} time",
-            font_size=30
-        )
+        # Create list of all the PBs they will have depending on their furthest run.
+        lst = []
+        if distance == "Marathon":
+            lst = ["marathon", "half", "10k", "5k"]
+        elif distance == "Half-Marathon":
+            lst = ["half", "10k", "5k"]
+        elif distance == "10K":
+            lst = ["10k", "5k"]
+        elif distance == "5K":
+            lst = ["5k"]
 
-        self.input = TextInput(
-            hint_text="HH:MM:SS",
-            font_size=24,
-            size_hint=(1, 0.2),
-            multiline = False
-        )
-        self.input.bind(on_text_validate=self.update_input)
+        for dist in lst:
+            # Enter Longest Distance Time
+            title = Label(
+                text=f"Enter your {dist} time",
+                font_size=30
+            )
 
+            pb_input = TextInput(
+                hint_text="HH:MM:SS",
+                font_size=24,
+                height=30,
+                size_hint=(1, 0.2),
+                multiline=False
+            )
+
+            self.inputs[dist] = pb_input
+
+            pb_input.bind(on_text_validate=self.update_input)
+
+            layout.add_widget(title)
+            layout.add_widget(pb_input)
 
 
         # Buttons
 
-        btn_box = BoxLayout(size_hint=(1, 0.2), spacing=20)
+        btn_box = BoxLayout(
+            size_hint=(1, 0.2),
+            spacing=20
+        )
 
         back_btn = Button(text="Previous")
         next_btn = Button(text="Next")
-
-        # Bind Buttons
 
         back_btn.bind(on_press=self.go_back)
         next_btn.bind(on_press=self.go_next)
@@ -139,15 +159,18 @@ class RunningTimeScreen(Screen):
         btn_box.add_widget(back_btn)
         btn_box.add_widget(next_btn)
 
-        layout.add_widget(title)
-        layout.add_widget(self.input)
         layout.add_widget(btn_box)
 
         self.add_widget(layout)
 
+
     def update_input(self, instance):
-        PB = self.input.text
-        App.get_running_app().data["CurrentRunPB"] = PB
+        #For each distance they do create a data slot with the PB
+        for dist, pb_input in self.inputs.items():
+            PB = pb_input.text
+            print(PB)
+
+            App.get_running_app().data[f"{dist}_pb"] = PB
 
     def go_next(self, instance):
         selected.remove('running')

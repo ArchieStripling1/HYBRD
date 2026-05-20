@@ -163,9 +163,11 @@ class BuildPlan(Screen):
         longestRun = data.get("Longest_Run")
         longestSwim = data.get("Longest_Swim")
         longestCycle = data.get("Longest_Cycle")
-        currentRunPB = data.get("CurrentRunPB")
+        #Find out what their race pb is.
+        currentRunPB = data.get(f"{race}_pb")
         currentSwimPB = data.get("CurrentSwimPB")
         currentCyclePB = data.get("CurrentCyclePB")
+        print(currentRunPB)
 
         # if Race is a Running Race
         if race in raceRun:
