@@ -52,6 +52,37 @@ class BuildPlan(Screen):
         # Current PB
         self.currentPB_label = Label(font_size=20, size_hint_y=None, height=30)
 
+        # Level Section for basing workout off of how much experience you have running.
+        expertise = Label(
+            text="What level Runner are you: ",
+            font_size=20
+        )
+        # Creates Dropdown
+        dropdown = DropDown()
+
+        level_list = ["Beginner", "Intermediate", "Advanced"]
+        # For each day in days
+        for level in level_list:
+            btn = Button(
+                text=level,
+                size_hint_y=None,
+                height=44
+            )
+            # On button click it selects the text from the day and creates a button using an anonymous function
+            btn.bind(on_release=lambda btn: dropdown.select(btn.text))
+
+            dropdown.add_widget(btn)
+
+        self.levelBtn = Button(
+            text="Select Level",
+            size_hint=(1, None),
+            height=50
+        )
+
+        self.levelBtn.bind(on_release=dropdown.open)
+        # Dropdown uses x as the day and sets the long run day variable.
+        dropdown.bind(on_select=lambda instance, x: self.set_level(x))
+
         #Length of Plan
         length = Label(
             text="How many weeks do you want this plan to be: ",
@@ -100,7 +131,7 @@ class BuildPlan(Screen):
             font_size=20
         )
         #Creates Dropdown
-        dropdown = DropDown()
+        dropdown2 = DropDown()
 
         #For each day in days
         for day in days:
@@ -110,9 +141,9 @@ class BuildPlan(Screen):
                 height=44
             )
             #On button click it selects the text from the day and creates a button using an anonymous function
-            btn.bind(on_release=lambda btn: dropdown.select(btn.text))
+            btn.bind(on_release=lambda btn: dropdown2.select(btn.text))
 
-            dropdown.add_widget(btn)
+            dropdown2.add_widget(btn)
 
         self.longRunBtn = Button(
             text="Select Day",
@@ -120,9 +151,9 @@ class BuildPlan(Screen):
             height=50
         )
 
-        self.longRunBtn.bind(on_release=dropdown.open)
+        self.longRunBtn.bind(on_release=dropdown2.open)
         #Dropdown uses x as the day and sets the long run day variable.
-        dropdown.bind(on_select=lambda instance, x: self.set_long_run_day(x))
+        dropdown2.bind(on_select=lambda instance, x: self.set_long_run_day(x))
 
         # Build Plan Button
         buildPlanBtn = Button(
@@ -136,6 +167,8 @@ class BuildPlan(Screen):
         content.add_widget(self.weekly_label)
         content.add_widget(self.longest_label)
         content.add_widget(self.currentPB_label)
+        content.add_widget(expertise)
+        content.add_widget(self.levelBtn)
         content.add_widget(length)
         content.add_widget(self.planLength)
         content.add_widget(activityDays)
@@ -167,7 +200,6 @@ class BuildPlan(Screen):
         currentRunPB = data.get(f"{race}_pb")
         currentSwimPB = data.get("CurrentSwimPB")
         currentCyclePB = data.get("CurrentCyclePB")
-        print(currentRunPB)
 
         # if Race is a Running Race
         if race in raceRun:
@@ -242,6 +274,12 @@ class BuildPlan(Screen):
         self.longRunBtn.text = day
         App.get_running_app().data["LongRunDay"] = day
         print("Long run day:", day)
+
+    def set_level(self, level):
+        self.levelBtn.text = level
+        App.get_running_app().data["Level"] = level
+        print("Level:", level)
+
 
     def build_plan(self, instance):
         self.manager.current = "plan"

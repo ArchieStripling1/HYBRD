@@ -24,10 +24,41 @@ class PlanPage(Screen):
         weekly_miles = int(data.get("Weekly_Distance"))
         activity_days = data.get("ActivityDays")
         long_run_day = data.get("LongRunDay")
+        level = data.get("Level")
         weekly_hard_run = 0
 
         #Days in the week
         days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+
+        # Idea for different types of intervals but is there a cleaner way to store this??
+
+        interval_5k_types = {
+
+        }
+        interval_10k_types = {
+
+        }
+        interval_half_types = {
+
+        }
+        interval_marathon_types = {
+
+        }
+        tempo_5k_types = {
+
+        }
+        tempo_10k_types = {
+
+        }
+        tempo_half_types = {
+
+        }
+        tempo_marathon_types = {
+
+        }
+
+
+
         interval_types = [
             '1KM Repeats x 5',
             'Mile Repeats x 3',
@@ -214,6 +245,28 @@ class PlanPage(Screen):
 
                     #No more than one hard run a week right now.
                     weekly_hard_run += 1
+
+                # Race Week Workout
+                if week == plan_length:
+                    workout = {
+                        "type": "Rest"
+                    }
+                    plan[week_name][day] = workout
+                    if day == "Wednesday":
+                        workout = {
+                            "type": "Race Practice Session!",
+                            "distance": "Race Pace Miles x 3",
+                            "pace": f"{race_pace:.2f}/km"
+                        }
+                        plan[week_name][day] = workout
+                    if day == "Sunday":
+                        workout = {
+                            "type": "Race Day!",
+                            "distance": race.capitalize(),
+                            "pace": f"{race_pace:.2f}/km"
+                        }
+                        plan[week_name][day] = workout
+
 
 
             # Reset for next week

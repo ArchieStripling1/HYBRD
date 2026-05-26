@@ -167,10 +167,30 @@ class RunningTimeScreen(Screen):
     def update_input(self, instance):
         #For each distance they do create a data slot with the PB
         for dist, pb_input in self.inputs.items():
-            PB = pb_input.text
-            print(PB)
 
-            App.get_running_app().data[f"{dist}_pb"] = PB
+            # Split text.
+            text = pb_input.text.strip()
+
+            # If text is accepted try split it using ':' for hour minutes and seconds.
+            if not text:
+                continue
+
+            try:
+                hours, minutes, seconds = map(int, text.split(":"))
+
+                # Sum for the amount of seconds.
+                total = (
+                        hours * 3600
+                        + minutes * 60
+                        + seconds
+                )
+
+                App.get_running_app().data[f"{dist}_pb"] = total
+
+                print(dist, total)
+
+            except:
+                print(f"Invalid time for {dist}")
 
     def go_next(self, instance):
         selected.remove('running')
