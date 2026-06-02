@@ -73,58 +73,119 @@ class PlanPage(Screen):
             'Tempo 4KM'
         ]
         #Variable settings that change for each race.
-        race_settings = {
-            "5k": {
-                "max_long_run" : 12,
-                "max_easy_run" : 8,
-                "speed": "fast"
-            },
-            "10k": {
-                "max_long_run" : 18,
-                "max_easy_run" : 10,
-                "speed": "semi-fast"
+        raceDistance = 0
 
-            },
-            "half": {
-                "max_long_run" : 28,
-                "max_easy_run": 14,
-                "speed": "medium"
-            },
-            "marathon": {
-                "max_long_run" : 34,
-                "max_easy_run": 18,
-                "speed": "slow"
-            }
-        }
-        print(PB)
-        # Work out what their race pace based off their last PB
         if race == "5k":
-            race_pace = PB / 5
+            raceDistance = 5
+
+            # Work out what their race pace based off their last PB
+            predictedPace = PB - plan_length * 10
+            race_pace = predictedPace / 5
+
+            # Create different paces for different runs.
+            easy_pace = formatPace(race_pace + 120)
+            tempo_pace = formatPace(race_pace)
+            interval_pace = formatPace(race_pace - 15)
+
         elif race == "10k":
             # if user has not run that far it will get the PB that they have,
             # not run a half-marathon yet so they will use their 10k PB for reference.
+            raceDistance = 10
+
             if PB == 2.0:
                 PB = float(data.get("5k_pb", 2))
                 race_pace = PB / 5
+
             else:
-                race_pace = PB / 10
+                # Work out what their race pace based off their last PB
+                predictedPace = PB - plan_length * 15
+                race_pace = predictedPace/ 10
+
+                # Create different paces for different runs.
+                easy_pace = formatPace(race_pace + 105)
+                tempo_pace = formatPace(race_pace)
+                interval_pace = formatPace(race_pace - 15)
         elif race == "half":
+            raceDistance = 21.1
             if PB == 2.0:
                 PB = float(data.get("10k_pb", 2))
                 race_pace = PB / 10
             else:
-                race_pace = PB / 21.1
+                # Work out what their race pace based off their last PB
+                predictedPace = PB - plan_length * 20
+                race_pace = predictedPace / 21.1
+
+                # Create different paces for different runs.
+                easy_pace = formatPace(race_pace + 90)
+                tempo_pace = formatPace(race_pace)
+                interval_pace = formatPace(race_pace - 15)
         elif race == "marathon":
+            raceDistance = 42.2
             if PB == 2.0:
                 PB = float(data.get("half_pb", 2))
                 race_pace = PB / 21.1
             else:
-                race_pace = PB / 42.2
+                # Work out what their race pace based off their last PB
+                predictedPace = PB - plan_length * 25
+                race_pace = predictedPace / 42.2
 
-        #Find out different paces based off their PB
-        easy_pace = round(race_pace + 1.2, 2)
-        tempo_pace = round(race_pace + 0.25, 2)
-        interval_pace = round(race_pace - 0.15, 2)
+                # Create different paces for different runs.
+                easy_pace = formatPace(race_pace + 75)
+                tempo_pace = formatPace(race_pace)
+                interval_pace = formatPace(race_pace - 15)
+
+
+        # Change max distances based of their longest run and race distance.
+        if raceDistance > longest_run:
+            race_settings = {
+                "5k": {
+                    "max_long_run": 5,
+                    "max_easy_run": 3,
+                    "speed": "fast"
+                },
+                "10k": {
+                    "max_long_run": 10,
+                    "max_easy_run": 6,
+                    "speed": "semi-fast"
+
+                },
+                "half": {
+                    "max_long_run": 20,
+                    "max_easy_run": 8,
+                    "speed": "medium"
+                },
+                "marathon": {
+                    "max_long_run": 34,
+                    "max_easy_run": 15,
+                    "speed": "slow"
+                }
+            }
+        else:
+            race_settings = {
+                "5k": {
+                    "max_long_run": 12,
+                    "max_easy_run": 6,
+                    "speed": "fast"
+                },
+                "10k": {
+                    "max_long_run": 14,
+                    "max_easy_run": 8,
+                    "speed": "semi-fast"
+
+                },
+                "half": {
+                    "max_long_run": 23,
+                    "max_easy_run": 13,
+                    "speed": "medium"
+                },
+                "marathon": {
+                    "max_long_run": 38,
+                    "max_easy_run": 20,
+                    "speed": "slow"
+                }
+            }
+
+        print(PB)
 
         #Dictionary for the plan.
         plan = {}
@@ -179,7 +240,7 @@ class PlanPage(Screen):
                     workout = {
                         "type": "Long Run",
                         "distance": int(long_run_distance),
-                        "pace": f"{easy_pace:.2f}/km"
+                        "pace": easy_pace
                     }
                     plan[week_name][day] = workout
 
@@ -216,7 +277,7 @@ class PlanPage(Screen):
                         workout = {
                             "type": hard_type,
                             "session": session,
-                            "pace": f"{workout_pace:.2f}/km"
+                            "pace": workout_pace
                         }
                         plan[week_name][day] = workout
                         current_weekly_distance += 8
@@ -238,7 +299,7 @@ class PlanPage(Screen):
                         workout = {
                             "type": "Easy Run",
                             "distance": int(easy_distance),
-                            "pace": f"No faster than {easy_pace:.2f}/km"
+                            "pace": easy_pace
                         }
                         plan[week_name][day] = workout
                         current_weekly_distance += easy_distance
@@ -256,14 +317,14 @@ class PlanPage(Screen):
                         workout = {
                             "type": "Race Practice Session!",
                             "distance": "Race Pace Miles x 3",
-                            "pace": f"{race_pace:.2f}/km"
+                            "pace": tempo_pace
                         }
                         plan[week_name][day] = workout
                     if day == "Sunday":
                         workout = {
                             "type": "Race Day!",
                             "distance": race.capitalize(),
-                            "pace": f"{race_pace:.2f}/km"
+                            "pace": formatPace(race_pace)
                         }
                         plan[week_name][day] = workout
 
@@ -284,6 +345,14 @@ class PlanPage(Screen):
                 print(day, "->", workout)
 
 
+# Format their paces
+def formatPace(PB):
 
+    # Turn seconds into minutes and seconds rounded to the nearest division of 5.
+    minutes = int(PB // 60)
+    seconds = 5 * int(round((PB % 60)/ 5))
+
+    # Return the formated string.
+    return f"{minutes}:{seconds:02d}/km"
 
 
