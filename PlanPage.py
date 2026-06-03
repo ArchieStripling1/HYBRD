@@ -14,6 +14,40 @@ class PlanPage(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs) # setup Kivy screen
 
+        self.layout = BoxLayout(
+            orientation='vertical',
+            spacing=10,
+            padding=10
+        )
+
+        # Scroll area
+        self.scroll = ScrollView()
+
+        self.content = BoxLayout(
+            orientation='vertical',
+            spacing=10,
+            size_hint_y=None
+        )
+
+        self.content.bind(
+            minimum_height=self.content.setter('height')
+        )
+
+        self.scroll.add_widget(self.content)
+
+        restartButton = Button(
+            text='Restart',
+            size_hint=(1, 0.1),
+            font_size=24
+        )
+
+        restartButton.bind(on_press=self.restart)
+
+        self.layout.add_widget(self.scroll)
+        self.layout.add_widget(restartButton)
+
+        self.add_widget(self.layout)
+
 
     def on_enter(self):
         data = App.get_running_app().data
@@ -339,10 +373,36 @@ class PlanPage(Screen):
 
 
         for week, workouts in plan.items():
-            print(f"\n======== {week} ========")
+
+            week_label = Label(
+                text=week,
+                font_size=28,
+                bold=True,
+                size_hint_y=None,
+                height=50
+            )
+
+            self.content.add_widget(week_label)
 
             for day, workout in workouts.items():
-                print(day, "->", workout)
+                workout_text = f"{day}: {workout}"
+
+                day_label = Label(
+                    text=workout_text,
+                    font_size=18,
+                    size_hint_y=None,
+                    height=40
+                )
+
+                self.content.add_widget(day_label)
+
+
+    def restart(self, instance):
+
+        self.manager.current = "intro"
+        self.data = {}
+
+
 
 
 # Format their paces
@@ -354,5 +414,7 @@ def formatPace(PB):
 
     # Return the formated string.
     return f"{minutes}:{seconds:02d}/km"
+
+
 
 
