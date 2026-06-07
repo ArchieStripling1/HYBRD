@@ -12,11 +12,15 @@ from RaceScreen import RaceScreen
 from BuildPlanScreen import BuildPlan
 from PlanPage import PlanPage
 
+from kivy.core.window import Window
+from kivy.utils import get_color_from_hex
 
 class MainApp(App):
     def build(self):
 
         self.data = {}  #  store everything here
+
+        Window.clearcolor = get_color_from_hex("#0F172A")
 
         sm = ScreenManager()
 

@@ -10,6 +10,7 @@ from kivy.uix.togglebutton import ToggleButton
 
 from SportSelection import selected
 from kivy.app import App
+from Theme import *
 
 class BuildPlan(Screen):
     def __init__(self, **kwargs):
@@ -24,7 +25,8 @@ class BuildPlan(Screen):
             text="Build Plan",
             font_size=36,
             size_hint=(1, 0.15),
-            bold=True
+            bold=True,
+            color = TEXT
         )
 
         layout.add_widget(title)
@@ -38,19 +40,18 @@ class BuildPlan(Screen):
         content.bind(minimum_height=content.setter('height'))
 
         #Race Type
-
-        self.race_label = Label(font_size=22, size_hint_y=None, height=30)
+        self.race_label = Label(font_size=22, size_hint_y=None, height=30, color = TEXT)
 
         #Distance
 
         # Current Weekly Mileage
-        self.weekly_label = Label(font_size=20, size_hint_y=None, height=30)
+        self.weekly_label = Label(font_size=20, size_hint_y=None, height=30, color = TEXT)
 
         # Current Longest Effort
-        self.longest_label = Label(font_size=20, size_hint_y=None, height=30)
+        self.longest_label = Label(font_size=20, size_hint_y=None, height=30, color = TEXT)
 
         # Current PB
-        self.currentPB_label = Label(font_size=20, size_hint_y=None, height=30)
+        self.currentPB_label = Label(font_size=20, size_hint_y=None, height=30, color = TEXT)
 
         # Level Section for basing workout off of how much experience you have running.
         expertise = Label(
@@ -58,7 +59,7 @@ class BuildPlan(Screen):
             font_size=20
         )
         # Creates Dropdown
-        dropdown = DropDown()
+        self.dropdown = DropDown()
 
         level_list = ["Beginner", "Intermediate", "Advanced"]
         # For each day in days
@@ -66,30 +67,40 @@ class BuildPlan(Screen):
             btn = Button(
                 text=level,
                 size_hint_y=None,
-                height=44
+                height=44,
+                background_normal="",
+                background_color=PRIMARY,
+                color = TEXT,
+                bold=True,
+                border=(0, 0, 0, 0)
             )
             # On button click it selects the text from the day and creates a button using an anonymous function
-            btn.bind(on_release=lambda btn: dropdown.select(btn.text))
+            btn.bind(on_release=lambda btn: self.dropdown.select(btn.text))
 
-            dropdown.add_widget(btn)
+            self.dropdown.add_widget(btn)
 
         self.levelBtn = Button(
             text="Select Level",
             size_hint=(1, None),
-            height=50
+            height=50,
+            background_normal="",
+            background_color=(0.22, 0.74, 0.97, 1),
+            color=(1, 1, 1, 1),
+            bold=True,
+            border=(0, 0, 0, 0)
         )
 
-        self.levelBtn.bind(on_release=dropdown.open)
+        self.levelBtn.bind(on_release=self.dropdown.open)
         # Dropdown uses x as the day and sets the long run day variable.
-        dropdown.bind(on_select=lambda instance, x: self.set_level(x))
+        self.dropdown.bind(on_select=lambda instance, x: self.set_level(x))
 
         #Length of Plan
         length = Label(
             text="How many weeks do you want this plan to be: ",
             font_size=20,
             size_hint_y=None,
-            height=30
-
+            height=30,
+            color=TEXT,
         )
         self.planLength = TextInput(
             hint_text="No. Weeks",
@@ -110,7 +121,8 @@ class BuildPlan(Screen):
         # Days Available
         activityDays = Label(
             text="What days do you want to run: ",
-            font_size=20
+            font_size=20,
+            color = TEXT
         )
         days = ["Monday", "Tuesday", "Wednesday","Thursday", "Friday","Saturday","Sunday"]
         grid = GridLayout(
@@ -128,38 +140,54 @@ class BuildPlan(Screen):
         # Long Distance Effort Day
         longRunDay = Label(
             text="What day do you want to do your long run: ",
-            font_size=20
+            font_size=20,
+            color = TEXT
         )
         #Creates Dropdown
-        dropdown2 = DropDown()
+        self.dropdown2 = DropDown()
 
         #For each day in days
         for day in days:
             btn = Button(
                 text=day,
                 size_hint_y=None,
-                height=44
+                height=44,
+                background_normal="",
+                background_color=PRIMARY,
+                color=TEXT,
+                bold=True,
+                border=(0, 0, 0, 0)
             )
             #On button click it selects the text from the day and creates a button using an anonymous function
-            btn.bind(on_release=lambda btn: dropdown2.select(btn.text))
+            btn.bind(on_release=lambda btn: self.dropdown2.select(btn.text))
 
-            dropdown2.add_widget(btn)
+            self.dropdown2.add_widget(btn)
 
         self.longRunBtn = Button(
             text="Select Day",
             size_hint=(1, None),
-            height=50
+            height=50,
+            background_normal="",
+            background_color=PRIMARY,
+            color=TEXT,
+            bold=True,
+            border=(0, 0, 0, 0)
         )
 
-        self.longRunBtn.bind(on_release=dropdown2.open)
+        self.longRunBtn.bind(on_release=self.dropdown2.open)
         #Dropdown uses x as the day and sets the long run day variable.
-        dropdown2.bind(on_select=lambda instance, x: self.set_long_run_day(x))
+        self.dropdown2.bind(on_select=lambda instance, x: self.set_long_run_day(x))
 
         # Build Plan Button
         buildPlanBtn = Button(
             text="Build Plan",
             size_hint=(1, None),
-            height=50
+            height=50,
+            background_normal="",
+            background_color=PRIMARY,
+            color=TEXT,
+            bold=True,
+            border=(0, 0, 0, 0)
         )
         buildPlanBtn.bind(on_press = self.build_plan)
 
@@ -250,7 +278,11 @@ class BuildPlan(Screen):
             size_hint=(1, None),
             height=60,
             font_size=20,
-            background_color=(0.9, 0.9, 0.9, 1)
+            background_normal="",
+            background_color=PRIMARY,
+            color=TEXT,
+            bold=True,
+            border=(1, 1, 1, 1)
         )
         btn.bind(on_press=lambda instance: self.toggle_day(instance, day))
         return btn

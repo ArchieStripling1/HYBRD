@@ -7,6 +7,8 @@ from kivy.uix.screenmanager import Screen
 from kivy.uix.togglebutton import ToggleButton
 from SportSelection import selected
 from kivy.app import App
+from Theme import *
+from kivy.graphics import Color, RoundedRectangle
 
 
 class RaceScreen(Screen):
@@ -15,12 +17,19 @@ class RaceScreen(Screen):
 
         layout = BoxLayout(orientation='vertical', padding=20, spacing=20)
 
+        with layout.canvas.before:
+            Color(*BG)
+            self.rect = RoundedRectangle(pos=layout.pos, size=layout.size)
+
+        layout.bind(pos=self.update_rect, size=self.update_rect)
+
         # Header
         title = Label(
             text="Select Your Race",
             font_size=36,
             size_hint=(1, 0.15),
-            bold=True
+            bold=True,
+            color=TEXT,
         )
 
         layout.add_widget(title)
@@ -80,9 +89,13 @@ class RaceScreen(Screen):
 
         next_btn = Button(
             text="Next",
+            font_size=22,
             size_hint=(1, 0.1),
-            font_size=24,
-            background_color=(0.2, 0.6, 1, 1)  # blue
+            background_normal="",
+            background_color=PRIMARY,
+            color=TEXT,
+            bold=True,
+            border=(0, 0, 0, 0)
         )
         next_btn.bind(on_press=self.go_next)
 
@@ -99,6 +112,7 @@ class RaceScreen(Screen):
             font_size=26,
             size_hint=(1, None),
             height=40,
+            color=TEXT,
             bold=True
         )
 
@@ -108,8 +122,12 @@ class RaceScreen(Screen):
             text=text,
             size_hint=(1, None),
             height=60,
-            font_size=20,
-            background_color=(0.9, 0.9, 0.9, 1)
+            font_size=22,
+            background_normal="",
+            background_color=PRIMARY,
+            color=TEXT,
+            bold=True,
+            border=(0, 0, 0, 0)
         )
         btn.bind(on_press=lambda instance: self.select_race(value))
         return btn
@@ -127,3 +145,7 @@ class RaceScreen(Screen):
 
     def go_back(self, instance):
         self.manager.current = "sport"
+
+    def update_rect(self, *args):
+        self.rect.pos = self.pos
+        self.rect.size = self.size

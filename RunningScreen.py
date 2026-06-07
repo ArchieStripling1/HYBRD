@@ -6,26 +6,28 @@ from kivy.uix.slider import Slider
 from kivy.uix.textinput import TextInput
 from kivy.uix.screenmanager import Screen
 from SportSelection import selected
+from Theme import *
 
 
 class RunningScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        layout = BoxLayout(orientation='vertical', padding=30, spacing=30)
+        layout = BoxLayout(orientation='vertical', padding=20, spacing=20)
 
         # Header
         title = Label(
             text="Running Profile",
             font_size=34,
             size_hint=(1, 0.15),
-            bold=True
+            bold=True,
+            color=TEXT,
         )
         layout.add_widget(title)
 
         # Longest Run
         longest_box = BoxLayout(orientation='vertical', spacing=10)
-        longest_label = Label(text="Longest Run (km)", font_size=20)
+        longest_label = Label(text="Longest Run (km)", font_size=20, color=TEXT, bold=True)
 
         self.longest_value = Label(text="0 km", font_size=26)
 
@@ -42,7 +44,7 @@ class RunningScreen(Screen):
         # Weekly Distance
         weekly_box = BoxLayout(orientation='vertical', spacing=10)
 
-        weekly_label = Label(text="Weekly Distance (km)", font_size=20)
+        weekly_label = Label(text="Weekly Distance (km)", font_size=20, color=TEXT, bold=True)
 
         self.weekly_value = Label(text="0 km", font_size=26)
 
@@ -59,8 +61,22 @@ class RunningScreen(Screen):
         # Buttons
         btn_box = BoxLayout(size_hint=(1, 0.2), spacing=20)
 
-        back_btn = Button(text="Previous", font_size=20)
-        next_btn = Button(text="Next", font_size=20)
+        back_btn = Button(
+            text="Previous",
+            font_size=22,
+            background_normal="",
+            background_color=PRIMARY,
+            color=TEXT,
+            bold=True
+        )
+        next_btn = Button(
+            text="Next",
+            font_size=22,
+            background_normal="",
+            background_color=PRIMARY,
+            color=TEXT,
+            bold=True
+        )
 
         # Bind Buttons
         back_btn.bind(on_press=self.go_back)
@@ -107,7 +123,7 @@ class RunningTimeScreen(Screen):
 
         #reachable dictionary of PBs for distances
         self.inputs = {}
-        layout = BoxLayout(orientation='vertical', padding=30, spacing=30)
+        layout = BoxLayout(orientation='vertical', padding=15, spacing=15)
 
         # Create list of all the PBs they will have depending on their furthest run.
         lst = []
@@ -124,14 +140,16 @@ class RunningTimeScreen(Screen):
             # Enter Longest Distance Time
             title = Label(
                 text=f"Enter your {dist} time",
-                font_size=30
+                font_size=30,
+                color=TEXT,
+                bold=True
             )
 
             pb_input = TextInput(
                 hint_text="HH:MM:SS",
                 font_size=24,
                 height=30,
-                size_hint=(1, 0.2),
+                size_hint=(1, 0.3),
                 multiline=False
             )
 
@@ -150,8 +168,22 @@ class RunningTimeScreen(Screen):
             spacing=20
         )
 
-        back_btn = Button(text="Previous")
-        next_btn = Button(text="Next")
+        back_btn = Button(
+            text="Previous",
+            font_size=22,
+            background_normal="",
+            background_color=PRIMARY,
+            color=TEXT,
+            bold=True
+        )
+        next_btn = Button(
+            text="Next",
+            font_size=22,
+            background_normal="",
+            background_color=PRIMARY,
+            color=TEXT,
+            bold=True
+        )
 
         back_btn.bind(on_press=self.go_back)
         next_btn.bind(on_press=self.go_next)

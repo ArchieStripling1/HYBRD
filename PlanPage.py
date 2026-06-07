@@ -1,3 +1,4 @@
+from kivy.graphics import Color, RoundedRectangle
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
@@ -9,44 +10,28 @@ from kivy.uix.togglebutton import ToggleButton
 
 from SportSelection import selected
 from kivy.app import App
+from Theme import *
 
 class PlanPage(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs) # setup Kivy screen
-
-        self.layout = BoxLayout(
-            orientation='vertical',
-            spacing=10,
-            padding=10
-        )
 
         # Scroll area
         self.scroll = ScrollView()
 
         self.content = BoxLayout(
             orientation='vertical',
-            spacing=10,
+            spacing=30,
+            padding=25,
             size_hint_y=None
         )
 
         self.content.bind(
             minimum_height=self.content.setter('height')
         )
-
         self.scroll.add_widget(self.content)
 
-        restartButton = Button(
-            text='Restart',
-            size_hint=(1, 0.1),
-            font_size=24
-        )
-
-        restartButton.bind(on_press=self.restart)
-
-        self.layout.add_widget(self.scroll)
-        self.layout.add_widget(restartButton)
-
-        self.add_widget(self.layout)
+        self.add_widget(self.scroll)
 
 
     def on_enter(self):
@@ -371,30 +356,116 @@ class PlanPage(Screen):
 
         App.get_running_app().data["GeneratedPlan"] = plan
 
-
+        # Get Week and workout in that week
         for week, workouts in plan.items():
 
+            # Initialize Card
+            card = BoxLayout(
+                orientation='vertical',
+                spacing=15,
+                padding=20,
+                size_hint_y=None
+            )
+
+            # Dynamic height
+            card.bind(minimum_height=card.setter("height"))
+
+            # Card background
+            with card.canvas.before:
+                Color(*CARD)
+                card.rect = RoundedRectangle(
+                    pos=card.pos,
+                    size=card.size,
+                    radius=[25]
+                )
+
+            # Keep card updated
+            def update_rect(instance, value):
+                instance.rect.pos = instance.pos
+                instance.rect.size = instance.size
+
+            # Bind Card with updated variables
+            card.bind(pos=update_rect, size=update_rect)
+
+            # Week Title
             week_label = Label(
                 text=week,
-                font_size=28,
+                font_size=30,
                 bold=True,
+                color=TEXT,
                 size_hint_y=None,
                 height=50
             )
 
-            self.content.add_widget(week_label)
+            # Add Week to Card
+            card.add_widget(week_label)
 
+            # Get the day and workout in workouts
             for day, workout in workouts.items():
-                workout_text = f"{day}: {workout}"
 
-                day_label = Label(
-                    text=workout_text,
-                    font_size=18,
+                # Skip rest days as these don't need to be displayed in the plan section
+                if workout["type"] == "Rest":
+                    continue
+
+                # Get all Workout info
+                workout_text = f"[b]{day}[/b]\n"
+                workout_text += f"{workout['type']}\n"
+
+                if "session" in workout:
+                    workout_text += f"Session: {workout['session']}\n"
+
+                if "distance" in workout:
+                    workout_text += f"Distance: {workout['distance']}\n"
+
+                if "pace" in workout:
+                    workout_text += f"Pace: {workout['pace']}"
+
+                # Workout Card
+                workout_card = BoxLayout(
+                    orientation='vertical',
+                    padding=15,
                     size_hint_y=None,
-                    height=40
+                    height=140
                 )
 
-                self.content.add_widget(day_label)
+                # Workout card background
+                with workout_card.canvas.before:
+                    Color(*SUBTEXT)
+                    workout_card.rect = RoundedRectangle(
+                        pos=workout_card.pos,
+                        size=workout_card.size,
+                        radius=[18]
+                    )
+                # Keep Workout Updated
+                def update_workout_rect(instance, value):
+                    instance.rect.pos = instance.pos
+                    instance.rect.size = instance.size
+
+
+                # Bind Card with updated variables
+                workout_card.bind(
+                    pos=update_workout_rect,
+                    size=update_workout_rect
+                )
+
+                # Day workouts
+                day_label = Label(
+                    text=workout_text,
+                    markup=True,
+                    font_size=18,
+                    color=TEXT,
+                    halign="left",
+                    valign="middle",
+                    text_size=(650, None)
+                )
+                # Add day and workout to workout card
+                workout_card.add_widget(day_label)
+
+                # Add workout card to week card.
+                card.add_widget(workout_card)
+
+            # Add whole week card
+            self.content.add_widget(card)
 
 
     def restart(self, instance):

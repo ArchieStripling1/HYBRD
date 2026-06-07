@@ -1,8 +1,12 @@
+from kivy.graphics import Color, RoundedRectangle
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
 from kivy.uix.togglebutton import ToggleButton
+from kivy.uix.anchorlayout import AnchorLayout
+from Theme import *
+
 
 selected = []
 
@@ -15,37 +19,60 @@ class SportSelectionScreen(Screen):
             spacing=20,
             padding=40
         )
+        with layout.canvas.before:
+            Color(*BG)
+            self.rect = RoundedRectangle(pos=layout.pos, size=layout.size)
+
+        layout.bind(pos=self.update_rect, size=self.update_rect)
 
         # Header
         title = Label(
-            text="What are you interested in?",
+            text="Choose Your Sports",
             font_size=32,
-            size_hint=(1, 0.2)
+            size_hint=(1, 0.2),
+            bold=True,
+            color=TEXT,
         )
 
         # Buttons
         run_btn = ToggleButton(
             text="Running",
             font_size=24,
-            size_hint=(1, 0.2)
+            background_normal="",
+            background_color = PRIMARY,
+            color = TEXT,
+            bold = True,
+            border = (0, 0, 0, 0)
         )
 
         cycle_btn = ToggleButton(
             text="Cycling",
             font_size=24,
-            size_hint=(1, 0.2)
+            background_normal='',
+            background_color=PRIMARY,
+            color=TEXT,
+            bold=True,
+            border=(0, 0, 0, 0)
         )
 
         swim_btn = ToggleButton(
             text="Swimming",
             font_size=24,
-            size_hint=(1, 0.2)
+            background_normal="",
+            background_color=PRIMARY,
+            color=TEXT,
+            bold=True,
+            border=(0, 0, 0, 0)
         )
 
         next_btn = ToggleButton(
             text="Next",
             font_size=24,
-            size_hint=(1, 0.2)
+            background_normal="",
+            background_color=PRIMARY,
+            color=TEXT,
+            bold=True,
+            border=(0, 0, 0, 0)
         )
 
         # Bind Buttons
@@ -94,4 +121,8 @@ class SportSelectionScreen(Screen):
 
     def go_next(self, instance):
         self.manager.current = "race"
+
+    def update_rect(self, *args):
+        self.rect.pos = self.pos
+        self.rect.size = self.size
 
